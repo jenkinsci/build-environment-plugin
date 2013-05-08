@@ -1,0 +1,2 @@
+environment-informator-plugin
+=============================
