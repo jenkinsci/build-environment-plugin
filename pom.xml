@@ -7,7 +7,7 @@
   </parent>
 
   <groupId>org.jenkins-ci.plugins</groupId>
-  <artifactId>environment-informator</artifactId>
+  <artifactId>build-environment</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>hpi</packaging>
 

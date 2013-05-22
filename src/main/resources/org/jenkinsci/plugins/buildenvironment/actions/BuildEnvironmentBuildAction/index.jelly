@@ -1,0 +1,22 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
+         xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
+         xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+      	<table>
+      		<tr>
+      			<td>
+      				<st:include page="project_info.jelly" />
+      			</td>
+      		</tr>
+			<tr>
+      			<td>
+      				<st:include page="slave_info.jelly" />
+      			</td>
+      		</tr>
+      		<tr>
+      			<td>
+      				<st:include page="env_vars.jelly" />
+      			</td>
+      		</tr>
+      	</table>	
+
+</j:jelly>
