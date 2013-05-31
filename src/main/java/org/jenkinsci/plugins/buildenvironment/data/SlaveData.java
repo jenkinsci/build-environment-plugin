@@ -6,35 +6,23 @@ import java.util.TreeMap;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Node;
-import hudson.model.JobPropertyDescriptor;
-import hudson.slaves.NodeProperty;
 
 public class SlaveData extends Data {
-    Node node;
 
-    public SlaveData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build) {
-        super(project, build);
-        this.node = build.getBuiltOn();
+    public SlaveData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build, String name) {
+        super(project, build, name);
+        initializeDataMap(build.getBuiltOn());
     }
 
-    @Override
-    protected String getFileName() {
-        return "slave.xml";
-    }
-
-    protected TreeMap<String, String> createDataMap() {
-        TreeMap<String, String> data = new TreeMap<String, String>();
+    private void initializeDataMap(Node node) {
+        this.data = new TreeMap<String, String>();
         // get data, add it to map and return the newly created map.
+        if(node == null) {
+            data.put("Node was null", "build.getBuildOn() was null");
+            return;
+        }
         data.put("Node name", node.getDisplayName());
         data.put("Number of executors", String.valueOf(node.getNumExecutors()));
-        try {
-            data.put("clock difference", node.getClockDifference().toString());
-        } catch (IOException e) {
-            // cannot be retrieved
-        } catch (InterruptedException e) {
-            // cannot be retrieved
-        }
-        data.put("Property size", this.node.getNodeProperties().size() + "");
-        return data;
+        data.put("Time", System.currentTimeMillis() + "");
     }
 }

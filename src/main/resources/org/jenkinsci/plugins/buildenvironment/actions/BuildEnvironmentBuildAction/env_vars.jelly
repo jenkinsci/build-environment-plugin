@@ -2,7 +2,7 @@
          xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
          xmlns:f="/lib/form" xmlns:i="jelly:fmt">
        
-      	<table border="1">
+      	<table border="1" widht="300px">
       		<tr>
       			<td colspan="2" align="center">
       				Environment Variables

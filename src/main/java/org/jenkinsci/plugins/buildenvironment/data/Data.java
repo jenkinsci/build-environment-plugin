@@ -21,10 +21,14 @@ abstract public class Data {
 
     private AbstractProject<?, ?> project;
     private AbstractBuild<?, ?> build;
+    String name;
 
-    public Data(AbstractProject<?, ?> project, AbstractBuild<?, ?> build) {
+    protected TreeMap<String, String> data;
+
+    public Data(AbstractProject<?, ?> project, AbstractBuild<?, ?> build, String name) {
         this.project = project;
         this.build = build;
+        this.name = name;
     }
 
     public AbstractProject<?, ?> getProject() {
@@ -34,32 +38,13 @@ abstract public class Data {
     public AbstractBuild<?, ?> getBuild() {
         return this.build;
     }
+    
+    public String getName() {
+        return this.name;
+    }
 
     public TreeMap<String, String> getData() throws IOException {
-        TreeMap<String, String> env;
-        try {
-            XmlFile xml = new XmlFile(Hudson.XSTREAM, new File(
-                    this.getFullFileName()));
-
-            if (xml.exists()) {
-                env = xmlToMap(xml);
-                return env;
-            }
-        } catch (CannotResolveClassException e) {
-            return null;
-        }
-        return null;
+        return this.data;
     }
-
-    abstract protected String getFileName();
     
-    protected String getFullFileName() {
-        return Constants.FILE_BASE + this.getProject().getName() + "/" + this.getBuild().getId() + "/" + this.getFileName();
-    }
-
-    protected static TreeMap<String, String> xmlToMap(XmlFile file)
-            throws IOException {
-        return (TreeMap<String, String>) file
-                .unmarshal(new TreeMap<String, String>());
-    }
 }

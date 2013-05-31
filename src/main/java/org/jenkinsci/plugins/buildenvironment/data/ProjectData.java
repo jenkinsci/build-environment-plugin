@@ -10,25 +10,21 @@ import hudson.model.AbstractProject;
 
 public class ProjectData extends Data {
 
-    public ProjectData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build) {
-        super(project, build);
+    public ProjectData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build, String name) {
+        super(project, build, name);
+        initializeDataMap();
     }
 
-    @Override
-    protected String getFileName() {
-        return "project.xml";
-    }
-
-    protected TreeMap<String, String> createDataMap() {
-        TreeMap<String, String> data = new TreeMap<String, String>();
+    private void initializeDataMap() {
+        this.data = new TreeMap<String, String>();
         // get data, add it to map and return the newly created map.
         data.put("Project name", this.getProject().getName());
         data.put("Project url", this.getProject().getUrl());
         data.put("SCM", this.getProject().getScm().toString());
         data.put("SCM type", this.getProject().getScm().getType());
+        data.put("Time", System.currentTimeMillis() + "");
         //data.put("SCM as string", this.getProject().getScm().toString());
-       // data.put("SCM browser", this.getProject().getScm().getBrowser().toString());
-        return data;
+        //data.put("SCM browser", this.getProject().getScm().getBrowser().toString());
     }
 
 }

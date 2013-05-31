@@ -1,0 +1,47 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
+         xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
+         xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+       
+       
+       <j:forEach items="${it.getDataHoldersList()}" var="dataHolder">
+           	<table border="1">
+           		<tr>
+      				<td colspan="2" align="center">
+      					${dataHolder.getName()}
+      				</td>
+      			</tr>
+      			<tr>
+      				<td>
+      					name
+      				</td>
+      			
+      				<td>
+      					value
+      				</td>
+      			</tr>
+      			<tr style="background-color: #000000;">
+      				<td colspan="2" />
+      			</tr>
+      			<j:forEach items="${dataHolder.getData().keySet()}" var="current">
+            		<tr>
+            			<td>
+							${current}         		
+            			</td>
+            			<td>
+            				${dataHolder.getData().get(current)}
+            			</td>
+            		</tr>
+            	</j:forEach>
+            	<tr>
+            		<td>
+            			MapSize
+            		</td>
+            		<td>
+            			${dataHolder.getData().size()}
+            		</td>
+            	</tr>
+      			
+           	</table>
+       </j:forEach>
+       
+</j:jelly>

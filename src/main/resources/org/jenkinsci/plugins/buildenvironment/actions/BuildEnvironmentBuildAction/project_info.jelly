@@ -20,13 +20,13 @@
       		<tr style="background-color: #000000;">
       			<td colspan="2" />
       		</tr>
-      		<j:forEach items="${it.getProjectMap().keySet()}" var="current">
+      		<j:forEach items="${it.getDataMap(ProjectData.class).keySet()}" var="current">
             	<tr>
             		<td>
 						${current}         		
             		</td>
             		<td>
-            			${it.getProjectMap().get(current)}
+            			${it.getDataMap(ProjectData.class).get(current)}
             		</td>
             	</tr>
             </j:forEach>

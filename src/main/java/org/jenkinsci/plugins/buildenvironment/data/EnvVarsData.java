@@ -11,20 +11,15 @@ import hudson.slaves.NodeProperty;
 
 public class EnvVarsData extends Data {
 
-    public EnvVarsData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build) {
-        super(project, build);
+    public EnvVarsData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build, String name) {
+        super(project, build, name);
+        initializeDataMap();
     }
 
-    @Override
-    protected String getFileName() {
-        return "env_vars.xml";
-    }
-
-    protected TreeMap<String, String> createDataMap() {
-        TreeMap<String, String> data = new TreeMap<String, String>();
+    private void initializeDataMap() {
+        this.data = new TreeMap<String, String>();
         // get data, add it to map and return the newly created map.
-        
+
         data.putAll(this.getBuild().getEnvVars());
-        return data;
     }
 }
