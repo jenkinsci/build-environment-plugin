@@ -30,19 +30,19 @@ import hudson.model.Actionable;
 import hudson.model.Run;
 import hudson.util.RunList;
 
-public class BuildEnvironmentBuildAction  extends Actionable implements Action {
+public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
     /**
      * The current build.
      */
     private AbstractBuild<?, ?> build;
     private AbstractProject<?, ?> project;
-
-    private List<Data> dataHolders;
-
+    
     private AbstractBuild<?, ?> build1;
     private AbstractBuild<?, ?> build2;
     private String diffOption;
+
+    private List<Data> dataHolders;
 
     /**
      * Constructor method.
@@ -58,16 +58,20 @@ public class BuildEnvironmentBuildAction  extends Actionable implements Action {
         this.build2 = this.build;
         addDataHolders();
     }
-
+    
     public String getDisplayName() {
-        return Constants.NAME;
+        return "";
     }
 
     public String getIconFileName() {
-        return Constants.ICONFILENAME;
+        return null;
     }
 
     public String getUrlName() {
+        return Constants.URL;
+    }
+
+    public String getSearchUrl() {
         return Constants.URL;
     }
 
@@ -75,23 +79,19 @@ public class BuildEnvironmentBuildAction  extends Actionable implements Action {
         return this.dataHolders;
     }
 
-    public String getSearchUrl() {
-        return Constants.URL;
+    public RunList<?> getBuilds() {
+        if (this.project == null)
+            return null; // fix it!        
+        return this.project.getBuilds();
     }
-
+    
+  //Doest not work...form is not submitted correctly...
     public void doConfigSubmit(StaplerRequest req, StaplerResponse rsp) throws IOException, ServletException {
         final JSONObject form = req.getSubmittedForm();
         this.build1 = this.project.getBuildByNumber(Integer.parseInt(form.getString("build1")));
         this.build2 = this.project.getBuildByNumber(Integer.parseInt(form.getString("build2")));
         this.diffOption = form.getString("diffOption");
-        rsp.sendRedirect(this.getRedirectUrl());
-    }
-
-
-    public RunList<?> getBuilds() {
-        if (this.project == null)
-            return null; // fix it!        
-        return this.project.getBuilds();
+        rsp.sendRedirect(this.getBuildUrl());
     }
     
     public List<Map<String, StringPair>> getDifference() {
@@ -100,7 +100,7 @@ public class BuildEnvironmentBuildAction  extends Actionable implements Action {
         }
         return getDifference(this.build1, this.build2);
     }
-
+    
     public List<Map<String, StringPair>> getDifference(
             AbstractBuild<?, ?> build1, AbstractBuild<?, ?> build2) {
         BuildEnvironmentBuildAction action1 = build1
@@ -146,7 +146,7 @@ public class BuildEnvironmentBuildAction  extends Actionable implements Action {
 
         return mapList;
     }
-
+    
     private Map<String, StringPair> compareTwoDataMaps(Data data1, Data data2) {
         Map<String, StringPair> cmpList = new TreeMap<String, StringPair>();
         Set<String> keySet = new TreeSet<String>();
@@ -169,7 +169,7 @@ public class BuildEnvironmentBuildAction  extends Actionable implements Action {
             return null;
         }
     }
-
+    
     private boolean canMapBeRetrieved(Data data) throws IOException {
         return data != null && data.getData() != null;
     }
@@ -178,10 +178,29 @@ public class BuildEnvironmentBuildAction  extends Actionable implements Action {
         return canMapBeRetrieved(data) && data.getData().containsKey(key);
     }
     
-    private String getRedirectUrl() {
-        return this.build.getUrl();
+    /**
+     * Returns the build url.
+     * 
+     * @return build url as string
+     */
+    @SuppressWarnings("deprecation")
+    private String getBuildUrl() {
+        if (this.build.getProject() != null) {
+            return this.build.getProject().getAbsoluteUrl()
+                    + this.getBuildNumber();
+        }
+        return this.build.getAbsoluteUrl();
     }
-
+    
+    /**
+     * Returns the build number.
+     * 
+     * @return build number as string
+     */
+    private String getBuildNumber() {
+        return Integer.toString(this.build.getNumber());
+    }
+    
     private void addDataHolders() {
         // add the 3 classes to the list here and then test if information is
         // held untouched.
@@ -194,39 +213,4 @@ public class BuildEnvironmentBuildAction  extends Actionable implements Action {
         this.dataHolders.add(new ProjectData(this.project, this.build,
                 "Project Information"));
     }
-
-    // public TreeMap<String, String> getProjectMap() throws IOException {
-    // for (Data data : this.dataHolders) {
-    // if (data instanceof ProjectData) {
-    // return data.getData();
-    // }
-    // }
-    // TreeMap<String, String> m = new TreeMap<String, String>();
-    // m.put("MapNull", "not found in the list");
-    // return m;
-    // }
-    //
-    //
-    // public TreeMap<String, String> getSlaveMap() throws IOException {
-    // for (Data data : this.dataHolders) {
-    // if (data instanceof SlaveData) {
-    // return data.getData();
-    // }
-    // }
-    // TreeMap<String, String> m = new TreeMap<String, String>();
-    // m.put("MapNull", "not found in the list");
-    // return m;
-    // }
-    //
-    // public TreeMap<String, String> getEnvVarsMap() throws IOException {
-    // for (Data data : this.dataHolders) {
-    // if (data instanceof EnvVarsData) {
-    // return data.getData();
-    // }
-    // }
-    // TreeMap<String, String> m = new TreeMap<String, String>();
-    // m.put("MapNull", "not found in the list");
-    // return m;
-    // }
-
 }

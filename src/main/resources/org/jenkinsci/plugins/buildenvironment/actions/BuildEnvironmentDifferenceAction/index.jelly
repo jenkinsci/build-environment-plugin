@@ -1,0 +1,55 @@
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
+         xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
+         xmlns:f="/lib/form" xmlns:i="jelly:fmt">
+      	
+      	<form action="configSubmit" method="post" name="diffForm">
+      	<table>
+      		<tr>
+      			<td>
+	 				<select name="build1" >
+          				<j:forEach items="${it.getBuilds()}" var="currentBuild">
+            				<f:option value="${currentBuild}" > build #${currentBuild.getNumber()} </f:option>
+            			</j:forEach>								
+          			</select>
+      			</td>
+      			
+      			<td>
+      				<select name="build2" >
+          				<j:forEach items="${it.getBuilds()}" var="currentBuild">
+            				<f:option value="${currentBuild}" > build #${currentBuild.getNumber()} </f:option>
+            			</j:forEach>								
+          			</select>
+      			</td>
+      			
+      			<td>
+      				<select name="diffOption" >
+           				<f:option value="all" > all </f:option>
+           				<f:option value="diff" > only different </f:option>
+           				<f:option value="same" > all the same </f:option>
+          			</select>
+      			</td>
+      		</tr>	
+      	</table>
+      	
+      	<input type="submit" value="${%Show Difference}" style="margin-top: 30px;"/>
+        </form>
+        
+        <table border="1">
+        	<j:forEach items="${it.getDifference()}" var="currentMapDiff">
+            	<j:forEach items="${currentMapDiff.keySet()}" var="currentKey">
+            		<tr>
+            			<td>
+							${currentKey}         		
+            			</td>
+            			<td>
+            				${currentMapDiff.get(currentKey).getFirst()}
+            			</td>
+            			<td>
+            				${currentMapDiff.get(currentKey).getSecond()}
+            			</td>
+            		</tr>
+            	</j:forEach>	
+            </j:forEach>
+        </table>
+
+</j:jelly>
