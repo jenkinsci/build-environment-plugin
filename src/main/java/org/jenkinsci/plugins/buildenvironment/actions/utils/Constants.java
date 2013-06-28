@@ -1,6 +1,6 @@
 package org.jenkinsci.plugins.buildenvironment.actions.utils;
 
-import java.io.File;
+import java.awt.Color;
 
 /**
  * Global Constants.
@@ -12,7 +12,7 @@ public final class Constants {
     /**
      * Url for this plugin.
      */
-    public static final String URL = "build_environment";
+    public static final String URL = "compare_environment";
     /**
      * Not Applicable, Not Available.
      */
@@ -20,26 +20,21 @@ public final class Constants {
     /**
      * Name.
      */
-    public static final String NAME = "Build Environment";
+    public static final String NAME = "Compare environment";
     /**
      * Icon.
      */
-    public static final String ICONFILENAME = "/plugin/build-environment/icons/internet-mail.png";
-    
-    public static final String FILE_BASE = Constants.getHome() + "userContent/build-environment-history/";
+    public static final String MENUICONFILENAME = "/plugin/build-environment/icons/menu_icon.png";
+    public static final String SUMMARYICONFILENAME = "/plugin/build-environment/icons/summary_icon.png";
+    public static Color BackgroundDifferenceColor = new Color(255, 68, 68);
+    public static Color BackgroundNoDifferenceColor = new Color(187, 187, 187);
 
-    private static String getHome() {
-        String s = System.getProperty("HUDSON_HOME");
-        if (s == null) {
-            s = System.getProperty("JENKINS_HOME");
-        }
-        if (s == null) {
-            s = (new File(System.getProperty("user.dir"))).getParent();
-        }
-        if (s != null && !s.endsWith("/"))
-            s = s + "/";
-        if (s != null && !s.startsWith("/"))
-            s = "/" + s;
-        return s;
+    public static String getBackgroundNoDifferenceColorAsString() {
+        return Integer.toHexString(Constants.BackgroundNoDifferenceColor.getRGB())
+                .substring(2, 7);
+    }
+    public static String getBackgroundDifferenceColorAsString() {
+        return Integer.toHexString(Constants.BackgroundDifferenceColor.getRGB())
+                .substring(2, 7);
     }
 }

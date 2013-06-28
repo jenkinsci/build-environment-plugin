@@ -1,22 +1,19 @@
 package org.jenkinsci.plugins.buildenvironment.actions;
 
+import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
+import java.util.logging.Logger;
 
-import javax.mail.MessagingException;
 import javax.servlet.ServletException;
 
 import net.sf.json.JSONObject;
 
 import org.jenkinsci.plugins.buildenvironment.actions.utils.Constants;
-import org.jenkinsci.plugins.buildenvironment.actions.utils.StringPair;
+import org.jenkinsci.plugins.buildenvironment.actions.utils.Utils;
 import org.jenkinsci.plugins.buildenvironment.data.Data;
+import org.jenkinsci.plugins.buildenvironment.data.DataDifferenceObject;
 import org.jenkinsci.plugins.buildenvironment.data.EnvVarsData;
 import org.jenkinsci.plugins.buildenvironment.data.ProjectData;
 import org.jenkinsci.plugins.buildenvironment.data.SlaveData;
@@ -27,22 +24,26 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
 import hudson.model.Actionable;
+import hudson.model.Job;
 import hudson.model.Run;
 import hudson.util.RunList;
 
 public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
+    private static final Logger LOGGER = Logger
+            .getLogger(BuildEnvironmentBuildAction.class.getName());
+
     /**
      * The current build.
      */
-    private AbstractBuild<?, ?> build;
-    private AbstractProject<?, ?> project;
-    
+    final private AbstractBuild<?, ?> build;
+
     private AbstractBuild<?, ?> build1;
     private AbstractBuild<?, ?> build2;
-    private String diffOption;
+    private String diffOption = String.valueOf(false);
 
     private List<Data> dataHolders;
+    private List<DataDifferenceObject> dataDifference;
 
     /**
      * Constructor method.
@@ -53,18 +54,21 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
     public BuildEnvironmentBuildAction(Run<?, ?> build) {
         super();
         this.build = (AbstractBuild<?, ?>) build;
-        this.project = (AbstractProject<?, ?>) build.getParent();
         this.build1 = this.build;
         this.build2 = this.build;
-        addDataHolders();
+        this.addDataHolders();
     }
-    
+
     public String getDisplayName() {
-        return "";
+        return Constants.NAME;
     }
 
     public String getIconFileName() {
-        return null;
+        return Constants.MENUICONFILENAME;
+    }
+
+    public String getSummaryIconFilename() {
+        return Constants.SUMMARYICONFILENAME;
     }
 
     public String getUrlName() {
@@ -79,36 +83,147 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
         return this.dataHolders;
     }
 
+    public String trueFalseToYesNo(boolean value) {
+        if (value) {
+            return "yes";
+        }
+        return "no";
+    }
+
+    public List<AbstractBuild<?, ?>> getBuildsWithAction() {
+
+        List<AbstractBuild<?, ?>> list = new ArrayList<AbstractBuild<?, ?>>();
+        AbstractBuild<?, ?> currentBuild = null;
+        if (this.getProject().getLastCompletedBuild() instanceof AbstractBuild) {
+            currentBuild = (AbstractBuild<?, ?>) this.getProject()
+                    .getLastCompletedBuild();
+        }
+        while (currentBuild != null) {
+            if (currentBuild.getAction(BuildEnvironmentBuildAction.class) != null) {
+                list.add(currentBuild);
+            }
+            currentBuild = currentBuild.getPreviousCompletedBuild();
+        }
+        return list;
+    }
+
     public RunList<?> getBuilds() {
-        if (this.project == null)
-            return null; // fix it!        
-        return this.project.getBuilds();
+        return this.getProject().getBuilds();
     }
-    
-  //Doest not work...form is not submitted correctly...
-    public void doConfigSubmit(StaplerRequest req, StaplerResponse rsp) throws IOException, ServletException {
+
+    public AbstractBuild<?, ?> getBuild() {
+        return this.build;
+    }
+
+    public Job<?, ?> getProject() {
+        return this.build.getProject();
+    }
+
+    public AbstractProject<?, ?> getAbstractProject() {
+        return this.build.getParent();
+    }
+
+    public void doConfigSubmit(StaplerRequest req, StaplerResponse rsp)
+            throws IOException, ServletException {
         final JSONObject form = req.getSubmittedForm();
-        this.build1 = this.project.getBuildByNumber(Integer.parseInt(form.getString("build1")));
-        this.build2 = this.project.getBuildByNumber(Integer.parseInt(form.getString("build2")));
-        this.diffOption = form.getString("diffOption");
-        rsp.sendRedirect(this.getBuildUrl());
+        this.build1 = this.getAbstractProject().getBuildByNumber(
+                Integer.parseInt(form.getString("build1")));
+        this.build2 = this.getAbstractProject().getBuildByNumber(
+                Integer.parseInt(form.getString("build2")));
+        this.diffOption = form.getString("diffOnly");
+        rsp.sendRedirect(this.getRedirectUrl());
     }
-    
-    public List<Map<String, StringPair>> getDifference() {
-        if(build1 == null || build2 == null) {
+
+    public boolean isOnlyDifference() {
+        if (this.diffOption != null && this.diffOption.equals("true")) {
+            return true;
+        }
+        return false;
+    }
+
+    private String getRedirectUrl() {
+        return this.getBuildUrl() + "/" + Constants.URL;
+    }
+
+    public AbstractBuild<?, ?> getBuild1() {
+        return this.build1;
+    }
+
+    public AbstractBuild<?, ?> getBuild2() {
+        return this.build2;
+    }
+
+    public String getBackgroundColor(boolean change) {
+        if (change) {
+            return Constants.getBackgroundDifferenceColorAsString();
+        }
+        return Constants.getBackgroundNoDifferenceColorAsString();
+    }
+
+    public int getDifferentCount(Data data) {
+        if (this.dataDifference == null) {
+            this.calculatePreviousBuildDifference();
+        }
+        try {
+            for (DataDifferenceObject currentDataDiff : this.dataDifference) {
+                if (currentDataDiff.getName() == data.getName()) {
+                    return currentDataDiff.getDifferentCount();
+                }
+            }
+        } catch (NullPointerException e) {
+            return 0;
+        }
+        return 0;
+    }
+
+    public boolean isDifferentFromPrevious(Data data, String key) {
+        if (this.dataDifference == null) {
+            this.calculatePreviousBuildDifference();
+        }
+        try {
+            for (DataDifferenceObject currentDataDiff : this.dataDifference) {
+                if (currentDataDiff.getName() == data.getName()) {
+                    return currentDataDiff.getMap().get(key).areDifferent();
+                }
+            }
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return false;
+    }
+
+    public List<DataDifferenceObject> getDifference() {
+        if (build1 == null || build2 == null) {
             return null;
         }
         return getDifference(this.build1, this.build2);
     }
-    
-    public List<Map<String, StringPair>> getDifference(
+
+    private void calculatePreviousBuildDifference() {
+        AbstractBuild<?, ?> previousBuild = this.build
+                .getPreviousCompletedBuild();
+        while (previousBuild != null) {
+            if (previousBuild.getAction(BuildEnvironmentBuildAction.class) != null) {
+                // previous build with this action found, get out
+                break;
+            }
+            previousBuild = previousBuild.getPreviousCompletedBuild();
+        }
+        if (previousBuild != null) {
+            this.dataDifference = getDifference(this.build, previousBuild);
+        } else {
+            this.dataDifference = null;
+        }
+    }
+
+    private List<DataDifferenceObject> getDifference(
             AbstractBuild<?, ?> build1, AbstractBuild<?, ?> build2) {
         BuildEnvironmentBuildAction action1 = build1
                 .getAction(BuildEnvironmentBuildAction.class);
         BuildEnvironmentBuildAction action2 = build2
                 .getAction(BuildEnvironmentBuildAction.class);
 
-        List<Map<String, StringPair>> mapList = new ArrayList<Map<String, StringPair>>();
+        List<DataDifferenceObject> diffList = new ArrayList<DataDifferenceObject>();
         for (Data data1 : action1.getDataHoldersList()) {
             boolean flag = false;
             for (Data data2 : action2.getDataHoldersList()) {
@@ -116,7 +231,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
                         .equals(data2.getClass().getName())) {
                     // Data class listed in both builds, calculate difference
                     // and add it to the mapList
-                    mapList.add(compareTwoDataMaps(data1, data2));
+                    diffList.add(new DataDifferenceObject(data1, data2));
                     flag = true;
                     break;
                 }
@@ -144,40 +259,9 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
         // }
         // }
 
-        return mapList;
-    }
-    
-    private Map<String, StringPair> compareTwoDataMaps(Data data1, Data data2) {
-        Map<String, StringPair> cmpList = new TreeMap<String, StringPair>();
-        Set<String> keySet = new TreeSet<String>();
-        try {
-            if (canMapBeRetrieved(data1)) {
-                keySet.addAll(data1.getData().keySet());
-            }
-            if (canMapBeRetrieved(data2)) {
-                keySet.addAll(data2.getData().keySet());
-            }
-            for (String key : keySet) {
-                cmpList.put(key, new StringPair(
-                        checkMapAttribute(data1, key) ? data1.getData()
-                                .get(key) : "",
-                        checkMapAttribute(data2, key) ? data2.getData()
-                                .get(key) : ""));
-            }
-            return cmpList;
-        } catch (IOException e) {
-            return null;
-        }
-    }
-    
-    private boolean canMapBeRetrieved(Data data) throws IOException {
-        return data != null && data.getData() != null;
+        return diffList;
     }
 
-    private boolean checkMapAttribute(Data data, String key) throws IOException {
-        return canMapBeRetrieved(data) && data.getData().containsKey(key);
-    }
-    
     /**
      * Returns the build url.
      * 
@@ -185,13 +269,12 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
      */
     @SuppressWarnings("deprecation")
     private String getBuildUrl() {
-        if (this.build.getProject() != null) {
-            return this.build.getProject().getAbsoluteUrl()
-                    + this.getBuildNumber();
+        if (this.getProject() != null) {
+            return this.getProject().getAbsoluteUrl() + this.getBuildNumber();
         }
         return this.build.getAbsoluteUrl();
     }
-    
+
     /**
      * Returns the build number.
      * 
@@ -200,17 +283,18 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
     private String getBuildNumber() {
         return Integer.toString(this.build.getNumber());
     }
-    
+
     private void addDataHolders() {
-        // add the 3 classes to the list here and then test if information is
-        // held untouched.
-        // for Friday 24.05.2013
         this.dataHolders = new ArrayList<Data>();
-        this.dataHolders.add(new EnvVarsData(this.project, this.build,
-                "Environment Variables"));
-        this.dataHolders.add(new SlaveData(this.project, this.build,
-                "Slave Information"));
-        this.dataHolders.add(new ProjectData(this.project, this.build,
-                "Project Information"));
+        this.dataHolders.add(new EnvVarsData(this.getAbstractProject(),
+                this.build, "Environment Variables", "envVar"));
+        this.dataHolders.add(new SlaveData(this.getAbstractProject(),
+                this.build, "Slave Information", "slaveInfo"));
+        this.dataHolders.add(new ProjectData(this.getAbstractProject(),
+                this.build, "Project Information", "projectInfo"));
+        for (Data data : this.dataHolders) {
+            Utils.filterMap(data.getData(),
+                    Utils.getPasswordRestrictionPatterns());
+        }
     }
 }

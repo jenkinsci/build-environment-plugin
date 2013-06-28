@@ -1,55 +1,110 @@
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
-         xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
-         xmlns:f="/lib/form" xmlns:i="jelly:fmt">
-      	
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define" xmlns:l="/lib/layout"
+         xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+    
+   <l:layout title="${%Compare Environment}">
+   <st:include it="${it.build}" page="sidepanel.jelly"/>
+    <l:main-panel>  	
       	<form action="configSubmit" method="post" name="diffForm">
       	<table>
       		<tr>
       			<td>
 	 				<select name="build1" >
-          				<j:forEach items="${it.getBuilds()}" var="currentBuild">
-            				<f:option value="${currentBuild}" > build #${currentBuild.getNumber()} </f:option>
+          				<j:forEach items="${it.getBuildsWithAction()}" var="currentBuild">
+            				<j:choose>
+								<j:when test="${currentBuild.getDisplayName().equals(it.getBuild1().getDisplayName())}">
+									<option value="${currentBuild.getNumber()}" selected="selected"> build #${currentBuild.getNumber()}-${currentBuild.getResult().toString()} </option>
+								</j:when>
+								<j:otherwise>
+									<option value="${currentBuild.getNumber()}" > build #${currentBuild.getNumber()}-${currentBuild.getResult().toString()} </option>	
+								</j:otherwise>
+							</j:choose>
             			</j:forEach>								
           			</select>
       			</td>
       			
       			<td>
       				<select name="build2" >
-          				<j:forEach items="${it.getBuilds()}" var="currentBuild">
-            				<f:option value="${currentBuild}" > build #${currentBuild.getNumber()} </f:option>
+          				<j:forEach items="${it.getBuildsWithAction()}" var="currentBuild">
+            				<j:choose>
+								<j:when test="${currentBuild.getDisplayName().equals(it.getBuild2().getDisplayName())}">
+									<option value="${currentBuild.getNumber()}" selected="selected"> build #${currentBuild.getNumber()}-${currentBuild.getResult().toString()} </option>
+								</j:when>
+								<j:otherwise>
+									<option value="${currentBuild.getNumber()}" > build #${currentBuild.getNumber()}-${currentBuild.getResult().toString()} </option>	
+								</j:otherwise>
+							</j:choose>
+            			
             			</j:forEach>								
           			</select>
       			</td>
       			
       			<td>
-      				<select name="diffOption" >
-           				<f:option value="all" > all </f:option>
-           				<f:option value="diff" > only different </f:option>
-           				<f:option value="same" > all the same </f:option>
+      				<select name="diffOnly" >
+           				<j:choose>
+           					<j:when test="${it.isOnlyDifference()}">
+           						<f:option value="true" selected="selected"> different only </f:option>
+           						<f:option value="false" > all </f:option>
+							</j:when>
+							<j:otherwise>
+           						<f:option value="false" selected="selected"> all </f:option>
+								<f:option value="true" > different only </f:option>
+           					</j:otherwise>								
+           				</j:choose>
           			</select>
       			</td>
       		</tr>	
       	</table>
       	
-      	<input type="submit" value="${%Show Difference}" style="margin-top: 30px;"/>
+      	<input type="submit" value="${%Update Difference}" style="margin-top: 20px;"/>
         </form>
         
-        <table border="1">
-        	<j:forEach items="${it.getDifference()}" var="currentMapDiff">
-            	<j:forEach items="${currentMapDiff.keySet()}" var="currentKey">
-            		<tr>
-            			<td>
-							${currentKey}         		
-            			</td>
-            			<td>
-            				${currentMapDiff.get(currentKey).getFirst()}
-            			</td>
-            			<td>
-            				${currentMapDiff.get(currentKey).getSecond()}
-            			</td>
-            		</tr>
-            	</j:forEach>	
-            </j:forEach>
-        </table>
+        <j:forEach items="${it.getDifference()}" var="currentDiffObject">
+        	<table border="0" width="100%" style="margin-top: 20px;">
+        		<tr>
+        			<td align="center">
+        				<font style="font-size: 140%;"> <b>${currentDiffObject.getName()} - ${currentDiffObject.getMap().size()} entries, ${currentDiffObject.getDifferentCount()} differences </b>	</font>
+        			</td> 
+        		</tr>
+        		<tr>
+        			<td>
+        				<table border="1" width="100%">
+        					<tr bgcolor="#0099EE">
+        						<td align="center" width="20%">
+        							Name
+        						</td>
+        						<td align="center" width="3%">
+        							Change
+        						</td>
+        						<td align="center">
+        							Build ${it.getBuild1().getDisplayName()}-${it.getBuild1().getResult().toString()}
+        						</td>
+        						<td align="center">
+        							Build ${it.getBuild2().getDisplayName()}-${it.getBuild2().getResult().toString()}
+        						</td>
+        					</tr>
+            				<j:forEach items="${it.isOnlyDifference() ? currentDiffObject.getDifferenceOnly().keySet() : currentDiffObject.getMap().keySet()}" var="currentKey">
+            				<tr bgcolor="${it.getBackgroundColor(currentDiffObject.getMap().get(currentKey).areDifferent())}">
+            					<td>
+									${currentKey}         		
+            					</td>
+            					<td align="center" style="max-width: 40px">
+            						${it.trueFalseToYesNo(currentDiffObject.getMap().get(currentKey).areDifferent())} 
+            					</td>
+            					<td>
+            						${currentDiffObject.getMap().get(currentKey).getFirst()}
+            					</td>
+            					<td>
+            						${currentDiffObject.getMap().get(currentKey).getSecond()}
+            					</td>
+            				</tr>
+            				</j:forEach>
+            			</table>	
+           			</td>
+            	</tr>	
+        	</table>
+        </j:forEach>
+        
+	</l:main-panel>
+   </l:layout>        
 
 </j:jelly>

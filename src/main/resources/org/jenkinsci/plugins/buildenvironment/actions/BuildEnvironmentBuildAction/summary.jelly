@@ -1,14 +1,72 @@
 <j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler"
 	xmlns:d="jelly:define" xmlns:l="/lib/layout" xmlns:t="/lib/hudson"
 	xmlns:f="/lib/form" xmlns:i="jelly:fmt">
-	<t:summary icon="${it.getIconFileName()}">
-
- 	<table style="max-width: 600px;">
- 		<tr>
-      		<td >
-      			<st:include page="buildinfotable.jelly" />
-      		</td>
-      	</tr>	
+	<t:summary icon="${it.getSummaryIconFilename()}">
+	
+	<script>
+		function kathiToggle(name) {
+			obj = document.getElementById(name + "");
+			if(obj.style.display=="none") {
+				obj.style.display = "";
+			} else {
+				obj.style.display = "none";
+			}
+		}
+	</script>
+	
+	
+ 	<table style="max-width: 700px; min-width: 700px">
+ 		<j:forEach items="${it.getDataHoldersList()}" var="dataHolder">
+           	<tr>
+           	<td>
+           	<table border="0" width="100%" >
+           		<tr>
+      				<td bgcolor="#33AAFF" colspan="2" align="center" onclick="kathiToggle('${dataHolder.getId()}');">
+      					<table border="0" width="100%">
+      						<tr >
+      							<td align="center" width="80%">
+      								${dataHolder.getName()}(${dataHolder.getData().size()})
+      							</td>
+      							
+      							<td align="right" wdith="20%" style="text-align: right;">
+      								${it.getDifferentCount(dataHolder)} different
+      							</td>
+      						</tr>      					
+      					</table>
+      				</td>
+      			</tr>
+      			<tr width="100%">
+      				
+      			<td>
+      				<table width="100%" id="${dataHolder.getId()}" name="${dataHolder.getId()}" border="1"  style="display:none">
+      					<tr bgcolor="${it.getBackgroundColor(false)}">
+      						<td style="text-align: center;">
+      							Name
+      						</td>
+      			
+      						<td style="text-align: center;">
+      							Value
+      						</td>
+      					</tr>
+      					<j:forEach items="${dataHolder.getData().keySet()}" var="current">
+            			<tr bgcolor="${it.getBackgroundColor(it.isDifferentFromPrevious(dataHolder, current))}">
+            				<td>
+								${current}         		
+            				</td>
+            				<td>
+            					${dataHolder.getData().get(current)}
+            				</td>
+            			</tr>
+            			</j:forEach>
+            		</table>
+            	</td>
+            	</tr>
+            	      			
+           	</table>
+           	
+           	</td>
+           	</tr>
+       </j:forEach>	
  	</table>
 	</t:summary>
 	

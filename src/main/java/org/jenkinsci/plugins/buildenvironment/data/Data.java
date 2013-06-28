@@ -22,13 +22,15 @@ abstract public class Data {
     private AbstractProject<?, ?> project;
     private AbstractBuild<?, ?> build;
     String name;
+    String id;
 
     protected TreeMap<String, String> data;
 
-    public Data(AbstractProject<?, ?> project, AbstractBuild<?, ?> build, String name) {
+    public Data(AbstractProject<?, ?> project, AbstractBuild<?, ?> build, String name, String id) {
         this.project = project;
         this.build = build;
         this.name = name;
+        this.id = id;
     }
 
     public AbstractProject<?, ?> getProject() {
@@ -43,8 +45,11 @@ abstract public class Data {
         return this.name;
     }
 
-    public TreeMap<String, String> getData() throws IOException {
+    public TreeMap<String, String> getData() {
         return this.data;
     }
     
+    public String getId() {
+        return this.id;
+    }
 }
