@@ -28,13 +28,7 @@ public class DataDifferenceObject {
     }
     
     public int getDifferentCount() {
-        int count = 0;
-        for(String key : this.difMap.keySet()) {
-            if(this.difMap.get(key).areDifferent()) {
-                count++;
-            }
-        }
-        return count;
+        return this.getDifferenceOnly().size();
     }
     
     public Map<String, StringPair> getDifferenceOnly() {

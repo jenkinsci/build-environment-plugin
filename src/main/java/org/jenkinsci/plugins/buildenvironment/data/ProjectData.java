@@ -49,12 +49,11 @@ public class ProjectData extends Data {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        data.put("Custom workspace", this.getProject().getCustomWorkspace());
-        for (JobPropertyDescriptor i : this.getProject().getProperties()
-                .keySet()) {
-            data.put(i.toString(), this.getProject().getProperties().get(i)
-                    .toString());
-        }
+        // for (JobPropertyDescriptor i : this.getProject().getProperties()
+        // .keySet()) {
+        // data.put(i.toString(), this.getProject().getProperties().get(i)
+        // .toString());
+        // }
         for (TriggerDescriptor i : this.getProject().getTriggers().keySet()) {
             data.put(i.getDisplayName(), this.getProject().getTriggers().get(i)
                     .toString());

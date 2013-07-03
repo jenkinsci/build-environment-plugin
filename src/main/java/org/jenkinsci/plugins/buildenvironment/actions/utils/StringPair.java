@@ -2,8 +2,8 @@ package org.jenkinsci.plugins.buildenvironment.actions.utils;
 
 public class StringPair {
 
-    String first;
-    String second;
+    private String first;
+    private String second;
 
     public StringPair(String first, String second) {
         this.first = first;

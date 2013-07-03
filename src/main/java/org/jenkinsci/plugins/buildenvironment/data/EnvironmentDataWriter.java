@@ -1,11 +1,11 @@
 package org.jenkinsci.plugins.buildenvironment.data;
 
-import org.jenkinsci.plugins.buildenvironment.actions.BuildEnvironmentBuildAction;
-
 import hudson.Extension;
-import hudson.model.AbstractBuild;
 import hudson.model.TaskListener;
+import hudson.model.AbstractBuild;
 import hudson.model.listeners.RunListener;
+
+import org.jenkinsci.plugins.buildenvironment.actions.BuildEnvironmentBuildAction;
 
 /**
  * Listens for builds and writes data when one is about to start.

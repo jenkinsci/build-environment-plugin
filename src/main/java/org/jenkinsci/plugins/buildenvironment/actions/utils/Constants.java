@@ -26,15 +26,15 @@ public final class Constants {
      */
     public static final String MENUICONFILENAME = "/plugin/build-environment/icons/menu_icon.png";
     public static final String SUMMARYICONFILENAME = "/plugin/build-environment/icons/summary_icon.png";
-    public static Color BackgroundDifferenceColor = new Color(255, 68, 68);
-    public static Color BackgroundNoDifferenceColor = new Color(187, 187, 187);
+    public static final Color BGDIFFERENCECOLOR = new Color(255, 68, 68);
+    public static final Color BGNODIFFERENCECOLOR = new Color(187, 187, 187);
 
     public static String getBackgroundNoDifferenceColorAsString() {
-        return Integer.toHexString(Constants.BackgroundNoDifferenceColor.getRGB())
+        return Integer.toHexString(Constants.BGNODIFFERENCECOLOR.getRGB())
                 .substring(2, 7);
     }
     public static String getBackgroundDifferenceColorAsString() {
-        return Integer.toHexString(Constants.BackgroundDifferenceColor.getRGB())
+        return Integer.toHexString(Constants.BGDIFFERENCECOLOR.getRGB())
                 .substring(2, 7);
     }
 }

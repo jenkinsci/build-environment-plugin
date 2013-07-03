@@ -1,21 +1,11 @@
 package org.jenkinsci.plugins.buildenvironment.data;
 
-import hudson.XmlFile;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
-import hudson.model.Hudson;
-import hudson.model.Node;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.TreeMap;
-import java.util.logging.Logger;
 
-import org.jenkinsci.plugins.buildenvironment.actions.utils.Constants;
-
-import com.thoughtworks.xstream.mapper.CannotResolveClassException;
-
-abstract public class Data {
+public abstract class Data {
     // private static final Logger LOGGER = Logger.getLogger(Data.class
     // .getName());
 

@@ -2,8 +2,6 @@ package org.jenkinsci.plugins.buildenvironment.data;
 
 import java.util.TreeMap;
 
-import org.jenkinsci.plugins.buildenvironment.actions.utils.Utils;
-
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 

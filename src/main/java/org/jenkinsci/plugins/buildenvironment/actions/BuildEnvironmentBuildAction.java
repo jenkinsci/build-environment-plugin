@@ -1,6 +1,5 @@
 package org.jenkinsci.plugins.buildenvironment.actions;
 
-import java.awt.Color;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,8 +29,8 @@ import hudson.util.RunList;
 
 public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
-    private static final Logger LOGGER = Logger
-            .getLogger(BuildEnvironmentBuildAction.class.getName());
+    // private static final Logger LOGGER = Logger
+    // .getLogger(BuildEnvironmentBuildAction.class.getName());
 
     /**
      * The current build.
@@ -40,7 +39,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
     private AbstractBuild<?, ?> build1;
     private AbstractBuild<?, ?> build2;
-    private String diffOption = String.valueOf(false);
+    private String diffOption;
 
     private List<Data> dataHolders;
     private List<DataDifferenceObject> dataDifference;
@@ -56,6 +55,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
         this.build = (AbstractBuild<?, ?>) build;
         this.build1 = this.build;
         this.build2 = this.build;
+        this.diffOption = String.valueOf(false);
         this.addDataHolders();
     }
 
@@ -165,15 +165,11 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
             this.calculatePreviousBuildDifference();
         }
         try {
-            for (DataDifferenceObject currentDataDiff : this.dataDifference) {
-                if (currentDataDiff.getName() == data.getName()) {
-                    return currentDataDiff.getDifferentCount();
-                }
-            }
+            return this.getDataDifferenceObjectByName(data.getName())
+                    .getDifferentCount();
         } catch (NullPointerException e) {
             return 0;
         }
-        return 0;
     }
 
     public boolean isDifferentFromPrevious(Data data, String key) {
@@ -181,15 +177,11 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
             this.calculatePreviousBuildDifference();
         }
         try {
-            for (DataDifferenceObject currentDataDiff : this.dataDifference) {
-                if (currentDataDiff.getName() == data.getName()) {
-                    return currentDataDiff.getMap().get(key).areDifferent();
-                }
-            }
+            return this.getDataDifferenceObjectByName(data.getName()).getMap()
+                    .get(key).areDifferent();
         } catch (NullPointerException e) {
             return false;
         }
-        return false;
     }
 
     public List<DataDifferenceObject> getDifference() {
@@ -197,6 +189,15 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
             return null;
         }
         return getDifference(this.build1, this.build2);
+    }
+
+    private DataDifferenceObject getDataDifferenceObjectByName(String name) {
+        for (DataDifferenceObject currentDataDiff : this.dataDifference) {
+            if (currentDataDiff.getName().equals(name)) {
+                return currentDataDiff;
+            }
+        }
+        return null;
     }
 
     private void calculatePreviousBuildDifference() {
@@ -236,11 +237,11 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
                     break;
                 }
             }
-            if (!flag) {
-                // @TODO
-                // Data instance is listed in action1, but no in action2
-                // Maybe show this also????
-            }
+            // if (!flag) {
+            // @TODO
+            // Data instance is listed in action1, but no in action2
+            // Maybe show this also????
+            // }
         }
 
         // for (Data data2 : action2.getDataHoldersList()) {
