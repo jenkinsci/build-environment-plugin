@@ -15,6 +15,15 @@ public class EnvVarsData extends Data {
 
     /**
      * Constructor method.
+     * 
+     * @param project
+     *            AbstractProject.
+     * @param build
+     *            AbstractBuild.
+     * @param name
+     *            Name as String.
+     * @param id
+     *            ID as String.
      */
     public EnvVarsData(AbstractProject<?, ?> project,
             AbstractBuild<?, ?> build, String name, String id) {

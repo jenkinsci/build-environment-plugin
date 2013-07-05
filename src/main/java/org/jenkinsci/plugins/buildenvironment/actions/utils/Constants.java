@@ -1,11 +1,6 @@
 package org.jenkinsci.plugins.buildenvironment.actions.utils;
 
-import hudson.model.Hudson;
-
 import java.awt.Color;
-import java.io.File;
-
-import jenkins.model.Jenkins;
 
 /**
  * Global Constants.

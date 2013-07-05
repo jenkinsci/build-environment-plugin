@@ -1,9 +1,9 @@
 package org.jenkinsci.plugins.buildenvironment.actions;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 import java.util.logging.Logger;
 
@@ -43,13 +43,16 @@ import hudson.util.RunList;
  */
 public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
+    /**
+     * Logger.
+     */
     private static final Logger LOGGER = Logger
             .getLogger(BuildEnvironmentBuildAction.class.getName());
 
     /**
      * The current build.
      */
-    final private AbstractBuild<?, ?> build;
+    private final AbstractBuild<?, ?> build;
 
     /**
      * First build when comparing builds. Equals the current build at the start.
@@ -97,6 +100,8 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
     /**
      * Display name for this Action.
+     * 
+     * @return display name as String.
      */
     public String getDisplayName() {
         return Constants.NAME;
@@ -104,6 +109,8 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
     /**
      * Icon file for this Action.
+     * 
+     * @return icon url as String.
      */
     public String getIconFileName() {
         return Constants.MENUICONFILENAME;
@@ -120,6 +127,8 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
     /**
      * Url for this Action.
+     * 
+     * @return urls as String.
      */
     public String getUrlName() {
         return Constants.URL;
@@ -127,6 +136,8 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
     /**
      * Search url for this Acion.
+     * 
+     * @return search url as String.
      */
     public String getSearchUrl() {
         return Constants.URL;
@@ -162,7 +173,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
      */
     public List<AbstractBuild<?, ?>> getBuildsWithAction() {
 
-        List<AbstractBuild<?, ?>> list = new ArrayList<AbstractBuild<?, ?>>();
+        final List<AbstractBuild<?, ?>> list = new ArrayList<AbstractBuild<?, ?>>();
         AbstractBuild<?, ?> currentBuild = null;
         if (this.getProject().getLastCompletedBuild() instanceof AbstractBuild) {
             currentBuild = (AbstractBuild<?, ?>) this.getProject()
@@ -188,7 +199,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
     public ArrayList<String> getEnvironmentVariablesForExport() {
         Data envVars = null;
         for (Data data : this.getDataHoldersList()) {
-            if (data.getId().equals("envVars")) {
+            if ("envVars".equals(data.getId())) {
                 envVars = data;
                 break;
             }
@@ -200,11 +211,11 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
             envVarsMap = new TreeMap<String, String>(this.getBuild()
                     .getEnvVars());
         }
-        ArrayList<String> exportVars = new ArrayList<String>();
-        for (String key : envVarsMap.keySet()) {
+        final ArrayList<String> exportVars = new ArrayList<String>();
+        for (Entry<String, String> element : envVarsMap.entrySet()) {
 
-            exportVars.add(key + "=" + envVarsMap.get(key) + "\n");
-            exportVars.add("export " + key + "\n");
+            exportVars.add(element.getKey() + "=" + element.getKey() + "\n");
+            exportVars.add("export " + element.getKey()+ "\n");
         }
         LOGGER.info(exportVars.size() + "");
         return exportVars;
@@ -300,7 +311,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
     }
 
     /**
-     * Passes the build2 Attribute
+     * Passes the build2 Attribute.
      * 
      * @return the build2 object.
      */
@@ -431,21 +442,21 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
      */
     private List<DataDifferenceObject> getDifference(
             AbstractBuild<?, ?> build1, AbstractBuild<?, ?> build2) {
-        BuildEnvironmentBuildAction action1 = build1
+        final BuildEnvironmentBuildAction action1 = build1
                 .getAction(BuildEnvironmentBuildAction.class);
-        BuildEnvironmentBuildAction action2 = build2
+        final BuildEnvironmentBuildAction action2 = build2
                 .getAction(BuildEnvironmentBuildAction.class);
 
-        List<DataDifferenceObject> diffList = new ArrayList<DataDifferenceObject>();
+        final List<DataDifferenceObject> diffList = new ArrayList<DataDifferenceObject>();
         for (Data data1 : action1.getDataHoldersList()) {
-            boolean flag = false;
+            // boolean flag = false;
             for (Data data2 : action2.getDataHoldersList()) {
                 if (data1.getClass().getName()
                         .equals(data2.getClass().getName())) {
                     // Data class listed in both builds, calculate difference
                     // and add it to the mapList
                     diffList.add(new DataDifferenceObject(data1, data2));
-                    flag = true;
+                    // flag = true;
                     break;
                 }
             }

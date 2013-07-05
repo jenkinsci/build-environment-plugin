@@ -37,29 +37,37 @@ public class BuildEnvironmentTest extends HudsonTestCase {
             // we have been interrupted
         }
         assertEquals(2, testJob.getBuilds().size());
-        BuildEnvironmentBuildAction buildEnvAction1 = testJob.getBuildByNumber(1).getAction(BuildEnvironmentBuildAction.class);
-        BuildEnvironmentBuildAction buildEnvAction2 = testJob.getBuildByNumber(2).getAction(BuildEnvironmentBuildAction.class);
+        BuildEnvironmentBuildAction buildEnvAction1 = testJob.getBuildByNumber(
+                1).getAction(BuildEnvironmentBuildAction.class);
+        BuildEnvironmentBuildAction buildEnvAction2 = testJob.getBuildByNumber(
+                2).getAction(BuildEnvironmentBuildAction.class);
         assertNotNull(buildEnvAction1);
         assertEquals(3, buildEnvAction1.getDataHoldersList().size());
         assertNotNull(buildEnvAction1.getBuildsWithAction());
         assertNotNull(buildEnvAction1.getBuilds());
         assertEquals(buildEnvAction1.getBuildsWithAction().size(), 2);
-        
-        assertTrue(buildEnvAction1.getBuilds().size() >= buildEnvAction1.getBuildsWithAction().size());
+
+        assertTrue(buildEnvAction1.getBuilds().size() >= buildEnvAction1
+                .getBuildsWithAction().size());
         assertEquals(buildEnvAction1.getBuild(), buildEnvAction1.getBuild1());
         assertEquals(buildEnvAction1.getBuild(), buildEnvAction1.getBuild2());
-        
+
         assertNotNull(buildEnvAction1.getAbstractProject());
-        
-        assertEquals(buildEnvAction1.getBackgroundColor(true), Constants.getBackgroundDifferenceColorAsString());
-        assertEquals(buildEnvAction1.getBackgroundColor(false), Constants.getBackgroundNoDifferenceColorAsString());
-        
-        assertTrue(buildEnvAction1.getDifferentCount(buildEnvAction2.getDataHoldersList().get(0)) >= 0);
-        
-        assertFalse(buildEnvAction2.isDifferentFromPrevious(buildEnvAction2.getDataHoldersList().get(2), "Project name"));
-        assertTrue(buildEnvAction2.isDifferentFromPrevious(buildEnvAction2.getDataHoldersList().get(0), "BUILD_NUMBER"));
-        
-        for(Data currentData : buildEnvAction1.getDataHoldersList()) {
+
+        assertEquals(buildEnvAction1.getBackgroundColor(true),
+                Constants.getBackgroundDifferenceColorAsString());
+        assertEquals(buildEnvAction1.getBackgroundColor(false),
+                Constants.getBackgroundNoDifferenceColorAsString());
+
+        assertTrue(buildEnvAction1.getDifferentCount(buildEnvAction2
+                .getDataHoldersList().get(0)) >= 0);
+
+        assertFalse(buildEnvAction2.isDifferentFromPrevious(buildEnvAction2
+                .getDataHoldersList().get(2), "Project name"));
+        assertTrue(buildEnvAction2.isDifferentFromPrevious(buildEnvAction2
+                .getDataHoldersList().get(0), "BUILD_NUMBER"));
+
+        for (Data currentData : buildEnvAction1.getDataHoldersList()) {
             assertNotNull(currentData.getBuild());
             assertNotNull(currentData.getId());
             assertNotNull(currentData.getName());
@@ -67,23 +75,23 @@ public class BuildEnvironmentTest extends HudsonTestCase {
             assertNotNull(currentData.getProject());
             assertTrue(currentData.getData().size() > 4);
         }
-        
+
         List<DataDifferenceObject> diff = buildEnvAction1.getDifference();
         assertNotNull(diff);
-        for(DataDifferenceObject currentDiff : diff) {
-           assertNotNull(currentDiff);
-           assertTrue(currentDiff.getMap().size() > 0);
-           assertNotNull(currentDiff.getName());
-           assertEquals(currentDiff.getDifferentCount(), 0);
+        for (DataDifferenceObject currentDiff : diff) {
+            assertNotNull(currentDiff);
+            assertTrue(currentDiff.getMap().size() > 0);
+            assertNotNull(currentDiff.getName());
+            assertEquals(currentDiff.getDifferentCount(), 0);
         }
         assertNotNull(buildEnvAction1.getEnvironmentVariablesForExport());
         assertTrue(buildEnvAction1.getEnvironmentVariablesForExport().size() > 5);
-        assertTrue(buildEnvAction1.getEnvironmentVariablesForExport().size()%2 == 0);
-        
+        assertTrue(buildEnvAction1.getEnvironmentVariablesForExport().size() % 2 == 0);
+
         trueFalseToYesNoTest(buildEnvAction1);
-        
-        stringPairTest();     
-        
+
+        stringPairTest();
+
     }
 
     private void trueFalseToYesNoTest(
@@ -95,7 +103,7 @@ public class BuildEnvironmentTest extends HudsonTestCase {
     private void stringPairTest() {
         final String first = "first";
         final String second = "second";
-                
+
         StringPair sp = new StringPair(first, second);
         assertEquals(first, sp.getFirst());
         assertEquals(second, sp.getSecond());

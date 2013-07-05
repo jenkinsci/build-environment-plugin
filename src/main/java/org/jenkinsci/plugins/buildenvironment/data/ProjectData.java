@@ -3,7 +3,6 @@ package org.jenkinsci.plugins.buildenvironment.data;
 import java.io.IOException;
 import java.util.TreeMap;
 
-import hudson.model.JobPropertyDescriptor;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.triggers.TriggerDescriptor;
@@ -18,6 +17,15 @@ public class ProjectData extends Data {
 
     /**
      * Constructor method.
+     * 
+     * @param project
+     *            AbstractProject.
+     * @param build
+     *            AbstractBuild.
+     * @param name
+     *            Name as String.
+     * @param id
+     *            ID as String.
      */
     public ProjectData(AbstractProject<?, ?> project,
             AbstractBuild<?, ?> build, String name, String id) {
