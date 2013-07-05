@@ -1,0 +1,126 @@
+BUILD_ID=2013-07-04_17-21-19
+export BUILD_ID
+BUILD_NUMBER=10
+export BUILD_NUMBER
+BUILD_TAG=jenkins-sgagdugnvfjdgjdfghjdfagadfgad-10
+export BUILD_TAG
+CLASSPATH=
+export CLASSPATH
+COLORTERM=gnome-terminal
+export COLORTERM
+DBUS_SESSION_BUS_ADDRESS=unix:abstract=/tmp/dbus-L5bwjCi4ZL,guid=b92f7dda33f726704f0783400000004a
+export DBUS_SESSION_BUS_ADDRESS
+DEFAULTS_PATH=/usr/share/gconf/gnome-classic.default.path
+export DEFAULTS_PATH
+DESKTOP_SESSION=gnome-classic
+export DESKTOP_SESSION
+DISPLAY=:0.0
+export DISPLAY
+EXECUTOR_NUMBER=0
+export EXECUTOR_NUMBER
+FOO=123
+export FOO
+GDMSESSION=gnome-classic
+export GDMSESSION
+GDM_LANG=en
+export GDM_LANG
+GNOME_DESKTOP_SESSION_ID=this-is-deprecated
+export GNOME_DESKTOP_SESSION_ID
+GNOME_KEYRING_CONTROL=/tmp/keyring-9rz7MS
+export GNOME_KEYRING_CONTROL
+GNOME_KEYRING_PID=1344
+export GNOME_KEYRING_PID
+GPG_AGENT_INFO=/tmp/keyring-9rz7MS/gpg:0:1
+export GPG_AGENT_INFO
+HOME=/home/yboev
+export HOME
+HUDSON_HOME=/home/yboev/eworkspace/build-environment-plugin/./work
+export HUDSON_HOME
+HUDSON_SERVER_COOKIE=7b48274b53b204c4
+export HUDSON_SERVER_COOKIE
+JAVA_HOME=/home/yboev/tools/SlaveTools/tools/opt/java/jdk1.6.0_23-64Bit
+export JAVA_HOME
+JENKINS_HOME=/home/yboev/eworkspace/build-environment-plugin/./work
+export JENKINS_HOME
+JENKINS_SERVER_COOKIE=7b48274b53b204c4
+export JENKINS_SERVER_COOKIE
+JOB_NAME=sgagdugnvfjdgjdfghjdfagadfgad
+export JOB_NAME
+LANG=de_DE.UTF-8
+export LANG
+LANGUAGE=en_US:en
+export LANGUAGE
+LC_COLLATE=en_US.UTF-8
+export LC_COLLATE
+LC_CTYPE=en_US.UTF-8
+export LC_CTYPE
+LC_MESSAGES=en_US.UTF-8
+export LC_MESSAGES
+LD_LIBRARY_PATH=/home/yboev/tools/SlaveTools/tools/opt/java/jdk1.6.0_23-64Bit/jre/lib/amd64/server:/home/yboev/tools/SlaveTools/tools/opt/java/jdk1.6.0_23-64Bit/jre/lib/amd64:/home/yboev/tools/SlaveTools/tools/opt/java/jdk1.6.0_23-64Bit/jre/../lib/amd64
+export LD_LIBRARY_PATH
+LESSCLOSE=/usr/bin/lesspipe %s %s
+export LESSCLOSE
+LESSOPEN=| /usr/bin/lesspipe %s
+export LESSOPEN
+LOGNAME=yboev
+export LOGNAME
+LS_COLORS=rs=0:di=01;34:ln=01;36:mh=00:pi=40;33:so=01;35:do=01;35:bd=40;33;01:cd=40;33;01:or=40;31;01:su=37;41:sg=30;43:ca=30;41:tw=30;42:ow=34;42:st=37;44:ex=01;32:*.tar=01;31:*.tgz=01;31:*.arj=01;31:*.taz=01;31:*.lzh=01;31:*.lzma=01;31:*.tlz=01;31:*.txz=01;31:*.zip=01;31:*.z=01;31:*.Z=01;31:*.dz=01;31:*.gz=01;31:*.lz=01;31:*.xz=01;31:*.bz2=01;31:*.bz=01;31:*.tbz=01;31:*.tbz2=01;31:*.tz=01;31:*.deb=01;31:*.rpm=01;31:*.jar=01;31:*.rar=01;31:*.ace=01;31:*.zoo=01;31:*.cpio=01;31:*.7z=01;31:*.rz=01;31:*.jpg=01;35:*.jpeg=01;35:*.gif=01;35:*.bmp=01;35:*.pbm=01;35:*.pgm=01;35:*.ppm=01;35:*.tga=01;35:*.xbm=01;35:*.xpm=01;35:*.tif=01;35:*.tiff=01;35:*.png=01;35:*.svg=01;35:*.svgz=01;35:*.mng=01;35:*.pcx=01;35:*.mov=01;35:*.mpg=01;35:*.mpeg=01;35:*.m2v=01;35:*.mkv=01;35:*.ogm=01;35:*.mp4=01;35:*.m4v=01;35:*.mp4v=01;35:*.vob=01;35:*.qt=01;35:*.nuv=01;35:*.wmv=01;35:*.asf=01;35:*.rm=01;35:*.rmvb=01;35:*.flc=01;35:*.avi=01;35:*.fli=01;35:*.flv=01;35:*.gl=01;35:*.dl=01;35:*.xcf=01;35:*.xwd=01;35:*.yuv=01;35:*.cgm=01;35:*.emf=01;35:*.axv=01;35:*.anx=01;35:*.ogv=01;35:*.ogx=01;35:*.aac=00;36:*.au=00;36:*.flac=00;36:*.mid=00;36:*.midi=00;36:*.mka=00;36:*.mp3=00;36:*.mpc=00;36:*.ogg=00;36:*.ra=00;36:*.wav=00;36:*.axa=00;36:*.oga=00;36:*.spx=00;36:*.xspf=00;36:
+export LS_COLORS
+M2_REPO=/home/yboev/.m2/
+export M2_REPO
+MANDATORY_PATH=/usr/share/gconf/gnome-classic.mandatory.path
+export MANDATORY_PATH
+MAVEN_HOME=/home/yboev/tools/apache-maven-3.0.5
+export MAVEN_HOME
+NLSPATH=/usr/dt/lib/nls/msg/%L/%N.cat
+export NLSPATH
+NODE_LABELS=master
+export NODE_LABELS
+NODE_NAME=master
+export NODE_NAME
+NO_AT_BRIDGE=1
+export NO_AT_BRIDGE
+NO_GAIL=1
+export NO_GAIL
+OLDPWD=/home/yboev/eworkspace/build-environment-plugin
+export OLDPWD
+PATH=/home/yboev/tools/SlaveTools/tools/opt/java/jdk1.6.0_23-64Bit:/home/yboev/lib/gsc/bin:/home/yboev/lib/gsc/bin:/home/yboev/tools/apache-maven-3.0.5/bin:/usr/local/bin:/usr/bin:/bin:/usr/games
+export PATH
+PWD=/home/yboev/eworkspace/build-environment-plugin
+export PWD
+SESSION_MANAGER=local/dxka-cnjq24j:@/tmp/.ICE-unix/1361,unix/dxka-cnjq24j:/tmp/.ICE-unix/1361
+export SESSION_MANAGER
+SHELL=/bin/bash
+export SHELL
+SHLVL=1
+export SHLVL
+SSH_AGENT_PID=1392
+export SSH_AGENT_PID
+SSH_AUTH_SOCK=/tmp/keyring-9rz7MS/ssh
+export SSH_AUTH_SOCK
+TERM=xterm
+export TERM
+USER=yboev
+export USER
+USERNAME=yboev
+export USERNAME
+WINDOWID=56623110
+export WINDOWID
+WINDOWPATH=7
+export WINDOWPATH
+WORKSPACE=/home/yboev/eworkspace/build-environment-plugin/work/jobs/sgagdugnvfjdgjdfghjdfagadfgad/workspace
+export WORKSPACE
+XAUTHORITY=/var/run/gdm/auth-for-yboev-Jczvdf/database
+export XAUTHORITY
+XDG_CONFIG_DIRS=/etc/xdg/xdg-gnome-classic:/etc/xdg
+export XDG_CONFIG_DIRS
+XDG_CURRENT_DESKTOP=GNOME
+export XDG_CURRENT_DESKTOP
+XDG_DATA_DIRS=/usr/share/gnome-classic:/usr/share/gnome:/usr/local/share/:/usr/share/
+export XDG_DATA_DIRS
+XDG_SESSION_COOKIE=6c84be7b6ccc6dd5d5b32d4200000291-1372930809.796707-2122087501
+export XDG_SESSION_COOKIE
+XFILESEARCHPATH=/usr/dt/app-defaults/%L/Dt
+export XFILESEARCHPATH
+_=/home/yboev/tools/apache-maven-3.0.5/bin/mvn
+export _

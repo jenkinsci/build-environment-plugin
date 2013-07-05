@@ -76,6 +76,9 @@ public class BuildEnvironmentTest extends HudsonTestCase {
            assertNotNull(currentDiff.getName());
            assertEquals(currentDiff.getDifferentCount(), 0);
         }
+        assertNotNull(buildEnvAction1.getEnvironmentVariablesForExport());
+        assertTrue(buildEnvAction1.getEnvironmentVariablesForExport().size() > 5);
+        assertTrue(buildEnvAction1.getEnvironmentVariablesForExport().size()%2 == 0);
         
         trueFalseToYesNoTest(buildEnvAction1);
         

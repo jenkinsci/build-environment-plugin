@@ -7,14 +7,25 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Node;
 
+/**
+ * Represents information connected with the slave on which the build has been built.
+ * @author yboev
+ *
+ */
 public class SlaveData extends Data {
-
+    
+    /**
+     * Constructor method.
+     */
     public SlaveData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build,
             String name, String id) {
         super(project, build, name, id);
         initializeDataMap(build.getBuiltOn());
     }
-
+    
+    /**
+     * Initialize method. Here data is added to the map.
+     */
     @SuppressWarnings("deprecation")
     private void initializeDataMap(Node node) {
         this.data = new TreeMap<String, String>();

@@ -63,7 +63,7 @@
        </td>
        
        <td width="100%" align="right">
-       	Get <a href="${it.getBuildEnvironmentVariablesFile()}"> build ${it.getBuild().getBuildNumber()} variables</a> for export.
+           Get <a href="export_variables"> build #${it.getBuild().getNumber()} variables</a> for bash export.
        </td>
      </tr>
    </table>     

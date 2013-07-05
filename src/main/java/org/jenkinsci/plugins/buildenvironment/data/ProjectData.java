@@ -8,14 +8,26 @@ import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.triggers.TriggerDescriptor;
 
+/**
+ * Represents information about the project to which this build belongs.
+ * 
+ * @author yboev
+ * 
+ */
 public class ProjectData extends Data {
 
+    /**
+     * Constructor method.
+     */
     public ProjectData(AbstractProject<?, ?> project,
             AbstractBuild<?, ?> build, String name, String id) {
         super(project, build, name, id);
         initializeDataMap();
     }
 
+    /**
+     * Initialize method. Here data is added to the map.
+     */
     private void initializeDataMap() {
         this.data = new TreeMap<String, String>();
         // get data, add it to map and return the newly created map.
@@ -45,7 +57,8 @@ public class ProjectData extends Data {
 
         // TreeMap<String, String> configFileMap = null;
         try {
-            data.put("configFileMap", this.getProject().getConfigFile().asString());
+            data.put("configFileMap", this.getProject().getConfigFile()
+                    .asString());
         } catch (IOException e) {
             e.printStackTrace();
         }
