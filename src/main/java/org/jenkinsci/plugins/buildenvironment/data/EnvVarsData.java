@@ -27,17 +27,17 @@ public class EnvVarsData extends Data {
      */
     public EnvVarsData(AbstractProject<?, ?> project,
             AbstractBuild<?, ?> build, String name, String id) {
-        super(project, build, name, id);
-        initializeDataMap();
+        super(name, id);
+        initializeDataMap(build);
     }
 
     /**
      * Initialize method. Here data is added to the map.
      */
     @SuppressWarnings("deprecation")
-    private void initializeDataMap() {
+    private void initializeDataMap(AbstractBuild<?, ?> build) {
         this.data = new TreeMap<String, String>();
         // get data, add it to map and return the newly created map.
-        data.putAll(this.getBuild().getEnvVars());
+        data.putAll(build.getEnvVars());
     }
 }

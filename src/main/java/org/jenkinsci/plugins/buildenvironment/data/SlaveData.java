@@ -30,7 +30,7 @@ public class SlaveData extends Data {
      */
     public SlaveData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build,
             String name, String id) {
-        super(project, build, name, id);
+        super(name, id);
         initializeDataMap(build.getBuiltOn());
     }
 

@@ -68,11 +68,9 @@ public class BuildEnvironmentTest extends HudsonTestCase {
                 .getDataHoldersList().get(0), "BUILD_NUMBER"));
 
         for (Data currentData : buildEnvAction1.getDataHoldersList()) {
-            assertNotNull(currentData.getBuild());
             assertNotNull(currentData.getId());
             assertNotNull(currentData.getName());
             assertNotNull(currentData.getData());
-            assertNotNull(currentData.getProject());
             assertTrue(currentData.getData().size() > 4);
         }
 

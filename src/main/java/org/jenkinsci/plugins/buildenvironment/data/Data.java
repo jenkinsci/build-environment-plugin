@@ -19,12 +19,12 @@ public abstract class Data {
     /**
      * The Project with which this data object is connected.
      */
-    private AbstractProject<?, ?> project;
+    // private AbstractProject<?, ?> project;
 
     /**
      * The build witch which this data object is connected.
      */
-    private AbstractBuild<?, ?> build;
+    // private AbstractBuild<?, ?> build;
 
     /**
      * Display name of the data object.
@@ -54,10 +54,9 @@ public abstract class Data {
      * @param id
      *            ID as String.
      */
-    public Data(AbstractProject<?, ?> project, AbstractBuild<?, ?> build,
-            String name, String id) {
-        this.project = project;
-        this.build = build;
+    public Data(String name, String id) {
+        // this.project = project;
+        // this.build = build;
         this.name = name;
         this.id = id;
     }
@@ -67,18 +66,18 @@ public abstract class Data {
      * 
      * @return the project object.
      */
-    public AbstractProject<?, ?> getProject() {
-        return this.project;
-    }
+    // public AbstractProject<?, ?> getProject() {
+    // return this.project;
+    // }
 
     /**
      * Returns the build.
      * 
      * @return the build object.
      */
-    public AbstractBuild<?, ?> getBuild() {
-        return this.build;
-    }
+    // public AbstractBuild<?, ?> getBuild() {
+    // return this.build;
+    // }
 
     /**
      * Returns the name.

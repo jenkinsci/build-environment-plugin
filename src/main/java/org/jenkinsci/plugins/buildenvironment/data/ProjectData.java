@@ -29,54 +29,50 @@ public class ProjectData extends Data {
      */
     public ProjectData(AbstractProject<?, ?> project,
             AbstractBuild<?, ?> build, String name, String id) {
-        super(project, build, name, id);
-        initializeDataMap();
+        super(name, id);
+        initializeDataMap(project);
     }
 
     /**
      * Initialize method. Here data is added to the map.
      */
-    private void initializeDataMap() {
+    private void initializeDataMap(AbstractProject<?, ?> project) {
         this.data = new TreeMap<String, String>();
         // get data, add it to map and return the newly created map.
-        data.put("Project name", this.getProject().getName());
-        data.put("Project url", this.getProject().getUrl());
-        data.put("SCM", this.getProject().getScm().toString());
-        data.put("SCM type", this.getProject().getScm().getType());
-        data.put("Quiet period",
-                String.valueOf(this.getProject().getQuietPeriod()));
-        data.put("Block when downstream building", String.valueOf(this
-                .getProject().blockBuildWhenDownstreamBuilding()));
-        data.put("Block when upstream building", String.valueOf(this
-                .getProject().blockBuildWhenUpstreamBuilding()));
+        data.put("Project name", project.getName());
+        data.put("Project url", project.getUrl());
+        data.put("SCM", project.getScm().toString());
+        data.put("SCM type", project.getScm().getType());
+        data.put("Quiet period", String.valueOf(project.getQuietPeriod()));
+        data.put("Block when downstream building",
+                String.valueOf(project.blockBuildWhenDownstreamBuilding()));
+        data.put("Block when upstream building",
+                String.valueOf(project.blockBuildWhenUpstreamBuilding()));
         data.put("Abort permission",
-                String.valueOf(this.getProject().hasAbortPermission()));
-        data.put("Is buildable",
-                String.valueOf(this.getProject().isBuildable()));
+                String.valueOf(project.hasAbortPermission()));
+        data.put("Is buildable", String.valueOf(project.isBuildable()));
         data.put("Is concurrent build",
-                String.valueOf(this.getProject().isConcurrentBuild()));
-        data.put("Is disabled", String.valueOf(this.getProject().isDisabled()));
+                String.valueOf(project.isConcurrentBuild()));
+        data.put("Is disabled", String.valueOf(project.isDisabled()));
         data.put("Is fingerprint configured",
-                String.valueOf(this.getProject().isFingerprintConfigured()));
-        data.put("Is parameterized",
-                String.valueOf(this.getProject().isParameterized()));
-        data.put("Is name editable",
-                String.valueOf(this.getProject().isNameEditable()));
+                String.valueOf(project.isFingerprintConfigured()));
+        data.put("Is parameterized", String.valueOf(project.isParameterized()));
+        data.put("Is name editable", String.valueOf(project.isNameEditable()));
 
         // TreeMap<String, String> configFileMap = null;
-        try {
-            data.put("configFileMap", this.getProject().getConfigFile()
-                    .asString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        // for (JobPropertyDescriptor i : this.getProject().getProperties()
+        // try {
+        // data.put("configFileMap", project.getConfigFile()
+        // .asString());
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // for (JobPropertyDescriptor i : project.getProperties()
         // .keySet()) {
-        // data.put(i.toString(), this.getProject().getProperties().get(i)
+        // data.put(i.toString(), project.getProperties().get(i)
         // .toString());
         // }
-        for (TriggerDescriptor i : this.getProject().getTriggers().keySet()) {
-            data.put(i.getDisplayName(), this.getProject().getTriggers().get(i)
+        for (TriggerDescriptor i : project.getTriggers().keySet()) {
+            data.put(i.getDisplayName(), project.getTriggers().get(i)
                     .toString());
         }
     }
