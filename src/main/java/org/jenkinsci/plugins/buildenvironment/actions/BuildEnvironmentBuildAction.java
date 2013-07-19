@@ -214,7 +214,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
         final ArrayList<String> exportVars = new ArrayList<String>();
         for (Entry<String, String> element : envVarsMap.entrySet()) {
 
-            exportVars.add(element.getKey() + "=" + element.getKey() + "\n");
+            exportVars.add(element.getKey() + "=" + element.getValue() + "\n");
             exportVars.add("export " + element.getKey()+ "\n");
         }
         LOGGER.info(exportVars.size() + "");
