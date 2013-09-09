@@ -51,6 +51,12 @@ public final class Utils {
     // return "s";
     // }
 
+    /**
+     * Returns a list of restricted properties such as passwords, so that they
+     * are not shown with the rest of the information.
+     * 
+     * @return list with restricted Strings
+     */
     public static List<String> getPasswordRestrictionPatterns() {
         final ArrayList<String> list = new ArrayList<String>(1 << 2);
         list.add("PASS");

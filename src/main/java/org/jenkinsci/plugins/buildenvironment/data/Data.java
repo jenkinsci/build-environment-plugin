@@ -1,8 +1,5 @@
 package org.jenkinsci.plugins.buildenvironment.data;
 
-import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
-
 import java.util.TreeMap;
 
 /**
@@ -29,12 +26,12 @@ public abstract class Data {
     /**
      * Display name of the data object.
      */
-    String name;
+    private String name;
 
     /**
      * ID of the data object.
      */
-    String id;
+    private String id;
 
     /**
      * This is where information is being held, relation variable<->value as
@@ -44,11 +41,6 @@ public abstract class Data {
 
     /**
      * Constructor method.
-     * 
-     * @param project
-     *            AbstractProject.
-     * @param build
-     *            AbstractBuild.
      * @param name
      *            Name as String.
      * @param id

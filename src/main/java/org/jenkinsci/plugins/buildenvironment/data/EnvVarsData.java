@@ -16,8 +16,6 @@ public class EnvVarsData extends Data {
     /**
      * Constructor method.
      * 
-     * @param project
-     *            AbstractProject.
      * @param build
      *            AbstractBuild.
      * @param name
@@ -25,14 +23,16 @@ public class EnvVarsData extends Data {
      * @param id
      *            ID as String.
      */
-    public EnvVarsData(AbstractProject<?, ?> project,
-            AbstractBuild<?, ?> build, String name, String id) {
+    public EnvVarsData(AbstractBuild<?, ?> build, String name, String id) {
         super(name, id);
         initializeDataMap(build);
     }
 
     /**
      * Initialize method. Here data is added to the map.
+     * 
+     * @param build
+     *            Current build.
      */
     @SuppressWarnings("deprecation")
     private void initializeDataMap(AbstractBuild<?, ?> build) {

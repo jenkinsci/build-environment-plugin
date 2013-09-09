@@ -215,7 +215,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
         for (Entry<String, String> element : envVarsMap.entrySet()) {
 
             exportVars.add(element.getKey() + "=" + element.getValue() + "\n");
-            exportVars.add("export " + element.getKey()+ "\n");
+            exportVars.add("export " + element.getKey() + "\n");
         }
         LOGGER.info(exportVars.size() + "");
         return exportVars;
@@ -266,8 +266,11 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
      * @param rsp
      *            the Response
      * @throws IOException
+     *             read problem
      * @throws ServletException
+     *             servlet problem
      */
+
     public void doConfigSubmit(StaplerRequest req, StaplerResponse rsp)
             throws IOException, ServletException {
         final JSONObject form = req.getSubmittedForm();
@@ -514,12 +517,12 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
      */
     private void addDataHolders() {
         this.dataHolders = new ArrayList<Data>();
-        this.dataHolders.add(new EnvVarsData(this.getAbstractProject(),
-                this.build, "Environment Variables", "envVar"));
-        this.dataHolders.add(new SlaveData(this.getAbstractProject(),
-                this.build, "Slave Information", "slaveInfo"));
+        this.dataHolders.add(new EnvVarsData(this.build,
+                "Environment Variables", "envVar"));
+        this.dataHolders.add(new SlaveData(this.build, "Slave Information",
+                "slaveInfo"));
         this.dataHolders.add(new ProjectData(this.getAbstractProject(),
-                this.build, "Project Information", "projectInfo"));
+                "Project Information", "projectInfo"));
         for (Data data : this.dataHolders) {
             Utils.filterMap(data.getData(),
                     Utils.getPasswordRestrictionPatterns());

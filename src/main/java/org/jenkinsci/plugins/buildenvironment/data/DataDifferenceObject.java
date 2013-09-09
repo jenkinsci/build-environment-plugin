@@ -73,7 +73,7 @@ public class DataDifferenceObject {
      * @return the map with different entries.
      */
     public Map<String, StringPair> getDifferenceOnly() {
-        Map<String, StringPair> difOnlyMap = new TreeMap<String, StringPair>();
+        final Map<String, StringPair> difOnlyMap = new TreeMap<String, StringPair>();
         for (String key : this.difMap.keySet()) {
             if (this.difMap.get(key).areDifferent()) {
                 difOnlyMap.put(key, difMap.get(key));
@@ -93,7 +93,7 @@ public class DataDifferenceObject {
      */
     private void calculateDifference(Data data1, Data data2) {
         this.difMap = new TreeMap<String, StringPair>();
-        Set<String> keySet = new TreeSet<String>();
+        final Set<String> keySet = new TreeSet<String>();
         try {
             if (canMapBeRetrieved(data1)) {
                 keySet.addAll(data1.getData().keySet());
@@ -106,7 +106,7 @@ public class DataDifferenceObject {
                         key,
                         new StringPair(checkMapAttribute(data1, key) ? data1
                                 .getData().get(key) : "", checkMapAttribute(
-                                data2, key) ? data2.getData().get(key) : ""));
+                                        data2, key) ? data2.getData().get(key) : ""));
             }
         } catch (IOException e) {
             this.difMap = null;
@@ -120,6 +120,7 @@ public class DataDifferenceObject {
      *            the data object
      * @return true if map can be retrieved, false otherwise.
      * @throws IOException
+     *             read problem
      */
     private boolean canMapBeRetrieved(Data data) throws IOException {
         return data != null && data.getData() != null;
@@ -134,6 +135,7 @@ public class DataDifferenceObject {
      *            the key as String
      * @return true if there is an entry behind this key, false otherwise.
      * @throws IOException
+     *             read problem
      */
     private boolean checkMapAttribute(Data data, String key) throws IOException {
         return canMapBeRetrieved(data) && data.getData().containsKey(key);

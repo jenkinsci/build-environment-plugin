@@ -19,8 +19,6 @@ public class SlaveData extends Data {
     /**
      * Constructor method.
      * 
-     * @param project
-     *            AbstractProject.
      * @param build
      *            AbstractBuild.
      * @param name
@@ -28,14 +26,16 @@ public class SlaveData extends Data {
      * @param id
      *            ID as String.
      */
-    public SlaveData(AbstractProject<?, ?> project, AbstractBuild<?, ?> build,
-            String name, String id) {
+    public SlaveData(AbstractBuild<?, ?> build, String name, String id) {
         super(name, id);
         initializeDataMap(build.getBuiltOn());
     }
 
     /**
      * Initialize method. Here data is added to the map.
+     * 
+     * @param node
+     *            The node on which this build has been built.
      */
     @SuppressWarnings("deprecation")
     private void initializeDataMap(Node node) {

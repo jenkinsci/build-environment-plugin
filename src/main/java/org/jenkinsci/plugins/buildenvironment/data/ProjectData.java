@@ -1,6 +1,5 @@
 package org.jenkinsci.plugins.buildenvironment.data;
 
-import java.io.IOException;
 import java.util.TreeMap;
 
 import hudson.model.AbstractBuild;
@@ -20,21 +19,21 @@ public class ProjectData extends Data {
      * 
      * @param project
      *            AbstractProject.
-     * @param build
-     *            AbstractBuild.
      * @param name
      *            Name as String.
      * @param id
      *            ID as String.
      */
-    public ProjectData(AbstractProject<?, ?> project,
-            AbstractBuild<?, ?> build, String name, String id) {
+    public ProjectData(AbstractProject<?, ?> project, String name, String id) {
         super(name, id);
         initializeDataMap(project);
     }
 
     /**
      * Initialize method. Here data is added to the map.
+     * 
+     * @param project
+     *            Current project.
      */
     private void initializeDataMap(AbstractProject<?, ?> project) {
         this.data = new TreeMap<String, String>();
