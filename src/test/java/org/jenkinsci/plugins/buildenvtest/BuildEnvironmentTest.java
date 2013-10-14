@@ -107,4 +107,5 @@ public class BuildEnvironmentTest extends HudsonTestCase {
         assertEquals(second, sp.getSecond());
         assertTrue(sp.areDifferent());
     }
+    
 }

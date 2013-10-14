@@ -525,7 +525,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
                 "Project Information", "projectInfo"));
         for (Data data : this.dataHolders) {
             Utils.filterMap(data.getData(),
-                    Utils.getPasswordRestrictionPatterns());
+                    Utils.getPasswordRestrictionPatterns(this.build));
         }
     }
 }
