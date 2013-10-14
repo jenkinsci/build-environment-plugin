@@ -21,7 +21,7 @@
            	<td>
            	<table border="0" width="100%">
            		<tr>
-      				<td bgcolor="#33AAFF" colspan="2" align="center" onclick="kathiToggle('${dataHolder.getId()}');">
+      				<td  bgcolor="#ADDFFF" colspan="2" align="center" onclick="kathiToggle('${dataHolder.getId()}');">
       					<table border="0" width="100%">
       						<tr >
       							<td align="center" width="80%">
