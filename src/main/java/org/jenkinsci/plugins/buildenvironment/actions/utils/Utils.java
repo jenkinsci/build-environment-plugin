@@ -26,9 +26,10 @@ public final class Utils {
      *         restriction Strings.
      */
     public static Map<String, String> filterMap(Map<String, String> map,
-            Set<String> restrictedStrings) {
+            AbstractBuild<?, ?> build) {
+        final Set<String> restrictedVariables = build.getSensitiveBuildVariables();
         final ArrayList<String> keysToBeRemoved = new ArrayList<String>();
-        for (String currentRestriction : restrictedStrings) {
+        for (String currentRestriction : restrictedVariables) {
             for (String key : map.keySet()) {
                 if (currentRestriction != null
                         && currentRestriction.equals(key)) {
@@ -49,8 +50,8 @@ public final class Utils {
      * 
      * @return list with restricted Strings
      */
-    public static Set<String> getPasswordRestrictionPatterns(
-            AbstractBuild<?, ?> build) {
-        return build.getSensitiveBuildVariables();
-    }
+    // public static Set<String> getPasswordRestrictionPatterns(
+    // AbstractBuild<?, ?> build) {
+    // return build.getSensitiveBuildVariables();
+    // }
 }

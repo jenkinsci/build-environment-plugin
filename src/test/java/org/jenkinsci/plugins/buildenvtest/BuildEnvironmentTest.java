@@ -3,10 +3,15 @@ package org.jenkinsci.plugins.buildenvtest;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
+import java.util.logging.Logger;
 
 import jenkins.model.Jenkins;
 
+import hudson.model.Environment;
+import hudson.model.Result;
+import hudson.model.Descriptor;
 import hudson.model.FreeStyleProject;
+import hudson.tasks.BuildWrapper;
 
 import org.jenkinsci.plugins.buildenvironment.actions.BuildEnvironmentBuildAction;
 import org.jenkinsci.plugins.buildenvironment.actions.utils.Constants;
@@ -19,11 +24,19 @@ import org.jvnet.hudson.test.HudsonTestCase;
 
 public class BuildEnvironmentTest extends HudsonTestCase {
 
+    FreeStyleProject testJob;
+
+    BuildEnvironmentBuildAction buildEnvAction1;
+    BuildEnvironmentBuildAction buildEnvAction2;
+
+    private static final Logger LOGGER = Logger
+            .getLogger(BuildEnvironmentTest.class.getName());
+
     @Test
-    public void test1() throws IOException {
+    public void test1() throws IOException, InterruptedException {
         assertNotNull(Jenkins.getInstance().getPlugin("build-environment"));
-        FreeStyleProject testJob = Jenkins.getInstance().createProject(
-                FreeStyleProject.class, "test_job1");
+        testJob = Jenkins.getInstance().createProject(FreeStyleProject.class,
+                "test_job1");
         testJob.scheduleBuild(new SampleBuildCause());
         try {
             TimeUnit.SECONDS.sleep(10);
@@ -37,11 +50,13 @@ public class BuildEnvironmentTest extends HudsonTestCase {
             // we have been interrupted
         }
         assertEquals(2, testJob.getBuilds().size());
-        BuildEnvironmentBuildAction buildEnvAction1 = testJob.getBuildByNumber(
-                1).getAction(BuildEnvironmentBuildAction.class);
-        BuildEnvironmentBuildAction buildEnvAction2 = testJob.getBuildByNumber(
-                2).getAction(BuildEnvironmentBuildAction.class);
+        assertTrue(testJob.getBuildByNumber(1).getResult() != Result.FAILURE);
+        buildEnvAction1 = testJob.getBuildByNumber(1).getAction(
+                BuildEnvironmentBuildAction.class);
+        buildEnvAction2 = testJob.getBuildByNumber(2).getAction(
+                BuildEnvironmentBuildAction.class);
         assertNotNull(buildEnvAction1);
+
         assertEquals(3, buildEnvAction1.getDataHoldersList().size());
         assertNotNull(buildEnvAction1.getBuildsWithAction());
         assertNotNull(buildEnvAction1.getBuilds());
@@ -54,10 +69,9 @@ public class BuildEnvironmentTest extends HudsonTestCase {
 
         assertNotNull(buildEnvAction1.getAbstractProject());
 
-        assertEquals(buildEnvAction1.getBackgroundColor(true),
-                Constants.getBackgroundDifferenceColorAsString());
-        assertEquals(buildEnvAction1.getBackgroundColor(false),
-                Constants.getBackgroundNoDifferenceColorAsString());
+        // checkSensitiveEnvironmentVariables();
+
+        checkColors();
 
         assertTrue(buildEnvAction1.getDifferentCount(buildEnvAction2
                 .getDataHoldersList().get(0)) >= 0);
@@ -86,14 +100,20 @@ public class BuildEnvironmentTest extends HudsonTestCase {
         assertTrue(buildEnvAction1.getEnvironmentVariablesForExport().size() > 5);
         assertTrue(buildEnvAction1.getEnvironmentVariablesForExport().size() % 2 == 0);
 
-        trueFalseToYesNoTest(buildEnvAction1);
+        trueFalseToYesNoTest();
 
         stringPairTest();
 
     }
 
-    private void trueFalseToYesNoTest(
-            BuildEnvironmentBuildAction buildEnvAction1) {
+    private void checkColors() {
+        assertEquals(buildEnvAction1.getBackgroundColor(true),
+                Constants.getBackgroundDifferenceColorAsString());
+        assertEquals(buildEnvAction1.getBackgroundColor(false),
+                Constants.getBackgroundNoDifferenceColorAsString());
+    }
+
+    private void trueFalseToYesNoTest() {
         assertEquals("yes", buildEnvAction1.trueFalseToYesNo(true));
         assertEquals("no", buildEnvAction1.trueFalseToYesNo(false));
     }
@@ -107,5 +127,11 @@ public class BuildEnvironmentTest extends HudsonTestCase {
         assertEquals(second, sp.getSecond());
         assertTrue(sp.areDifferent());
     }
-    
+
+    // private void checkSensitiveEnvironmentVariables() throws IOException,
+    // InterruptedException {
+    // LOGGER.info(this.testJob.getBuildByNumber(1).getSensitiveBuildVariables().size()
+    // + "");
+    // }
+
 }

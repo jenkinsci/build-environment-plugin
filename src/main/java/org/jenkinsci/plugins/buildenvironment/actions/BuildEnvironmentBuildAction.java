@@ -216,6 +216,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
 
             exportVars.add(element.getKey() + "=" + element.getValue() + "\n");
             exportVars.add("export " + element.getKey() + "\n");
+            LOGGER.info(element.getKey());
         }
         LOGGER.info(exportVars.size() + "");
         return exportVars;
@@ -524,8 +525,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
         this.dataHolders.add(new ProjectData(this.getAbstractProject(),
                 "Project Information", "projectInfo"));
         for (Data data : this.dataHolders) {
-            Utils.filterMap(data.getData(),
-                    Utils.getPasswordRestrictionPatterns(this.build));
+            Utils.filterMap(data.getData(), this.build);
         }
     }
 }
