@@ -43,15 +43,4 @@ public final class Utils {
         }
         return map;
     }
-
-    /**
-     * Returns a list of restricted properties such as passwords, so that they
-     * are not shown with the rest of the information.
-     * 
-     * @return list with restricted Strings
-     */
-    // public static Set<String> getPasswordRestrictionPatterns(
-    // AbstractBuild<?, ?> build) {
-    // return build.getSensitiveBuildVariables();
-    // }
 }
