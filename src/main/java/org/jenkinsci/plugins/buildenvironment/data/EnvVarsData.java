@@ -3,7 +3,6 @@ package org.jenkinsci.plugins.buildenvironment.data;
 import java.util.TreeMap;
 
 import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
 
 /**
  * Represents information about the environment variables used during the build.
@@ -36,7 +35,7 @@ public class EnvVarsData extends Data {
      */
     @SuppressWarnings("deprecation")
     private void initializeDataMap(AbstractBuild<?, ?> build) {
-        this.data = new TreeMap<String, String>();
+        TreeMap<String, String> data = this.initEmptyMap();
         // get data, add it to map and return the newly created map.
         data.putAll(build.getEnvVars());
     }

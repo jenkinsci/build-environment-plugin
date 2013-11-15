@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.TreeMap;
 
 import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
 import hudson.model.Node;
 
 /**
@@ -39,7 +38,7 @@ public class SlaveData extends Data {
      */
     @SuppressWarnings("deprecation")
     private void initializeDataMap(Node node) {
-        this.data = new TreeMap<String, String>();
+        TreeMap<String, String> data = this.initEmptyMap();
         // get data, add it to map and return the newly created map.
         if (node == null) {
             data.put("Node was null", "build.getBuildOn() was null");

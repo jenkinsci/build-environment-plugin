@@ -2,7 +2,6 @@ package org.jenkinsci.plugins.buildenvironment.data;
 
 import java.util.TreeMap;
 
-import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.triggers.TriggerDescriptor;
 
@@ -36,7 +35,7 @@ public class ProjectData extends Data {
      *            Current project.
      */
     private void initializeDataMap(AbstractProject<?, ?> project) {
-        this.data = new TreeMap<String, String>();
+        TreeMap<String, String> data = this.initEmptyMap();
         // get data, add it to map and return the newly created map.
         data.put("Project name", project.getName());
         data.put("Project url", project.getUrl());
@@ -58,18 +57,6 @@ public class ProjectData extends Data {
         data.put("Is parameterized", String.valueOf(project.isParameterized()));
         data.put("Is name editable", String.valueOf(project.isNameEditable()));
 
-        // TreeMap<String, String> configFileMap = null;
-        // try {
-        // data.put("configFileMap", project.getConfigFile()
-        // .asString());
-        // } catch (IOException e) {
-        // e.printStackTrace();
-        // }
-        // for (JobPropertyDescriptor i : project.getProperties()
-        // .keySet()) {
-        // data.put(i.toString(), project.getProperties().get(i)
-        // .toString());
-        // }
         for (TriggerDescriptor i : project.getTriggers().keySet()) {
             data.put(i.getDisplayName(), project.getTriggers().get(i)
                     .toString());

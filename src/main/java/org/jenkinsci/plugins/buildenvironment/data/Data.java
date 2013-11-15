@@ -10,18 +10,6 @@ import java.util.TreeMap;
  * 
  */
 public abstract class Data {
-    // private static final Logger LOGGER = Logger.getLogger(Data.class
-    // .getName());
-
-    /**
-     * The Project with which this data object is connected.
-     */
-    // private AbstractProject<?, ?> project;
-
-    /**
-     * The build witch which this data object is connected.
-     */
-    // private AbstractBuild<?, ?> build;
 
     /**
      * Display name of the data object.
@@ -37,10 +25,11 @@ public abstract class Data {
      * This is where information is being held, relation variable<->value as
      * map.
      */
-    protected TreeMap<String, String> data;
+    private TreeMap<String, String> data;
 
     /**
      * Constructor method.
+     * 
      * @param name
      *            Name as String.
      * @param id
@@ -52,24 +41,6 @@ public abstract class Data {
         this.name = name;
         this.id = id;
     }
-
-    /**
-     * Returns the project.
-     * 
-     * @return the project object.
-     */
-    // public AbstractProject<?, ?> getProject() {
-    // return this.project;
-    // }
-
-    /**
-     * Returns the build.
-     * 
-     * @return the build object.
-     */
-    // public AbstractBuild<?, ?> getBuild() {
-    // return this.build;
-    // }
 
     /**
      * Returns the name.
@@ -96,5 +67,23 @@ public abstract class Data {
      */
     public String getId() {
         return this.id;
+    }
+
+    /**
+     * Setter method for the data map.
+     * 
+     * @param newData
+     *            the new map that should be stored.
+     */
+    public void setData(TreeMap<String, String> newData) {
+        this.data = newData;
+    }
+
+    /**
+     * Sets an empty new map object and returns it.
+     */
+    public TreeMap<String, String> initEmptyMap() {
+        this.data = new TreeMap<String, String>();
+        return this.data;
     }
 }

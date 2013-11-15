@@ -2,7 +2,7 @@
   This view is used to render the installed plugins page.
 -->
 <div>
-  This plugin is a sample to explain how to write a Jenkins plugin.
+  This plugin shows information about the environment in which a project has been build and offers the option to comptare there environments.
 </div>
 
 

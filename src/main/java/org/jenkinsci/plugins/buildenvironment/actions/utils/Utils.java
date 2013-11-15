@@ -20,8 +20,8 @@ public final class Utils {
      * 
      * @param map
      *            the map being filtered.
-     * @param restrictedStrings
-     *            a list of strings that represent restrictions.
+     * @param build
+     *            the build for which we are filtering the map.
      * @return the filtered map, not containing entries that match one of the
      *         restriction Strings.
      */
