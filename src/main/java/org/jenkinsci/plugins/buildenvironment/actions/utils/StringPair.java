@@ -58,10 +58,6 @@ public class StringPair {
         if (first == null && second == null) {
             return false;
         }
-        try {
-            return !(this.first.trim().equals(this.second.trim()));
-        } catch (NullPointerException e) {
-            return true;
-        }
+        return !(this.first.trim().equals(this.second.trim()));
     }
 }

@@ -3,43 +3,65 @@ package org.jenkinsci.plugins.buildenvtest;
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
-import java.util.logging.Logger;
 
 import jenkins.model.Jenkins;
 
-import hudson.model.Environment;
 import hudson.model.Result;
-import hudson.model.Descriptor;
 import hudson.model.FreeStyleProject;
-import hudson.tasks.BuildWrapper;
 
 import org.jenkinsci.plugins.buildenvironment.actions.BuildEnvironmentBuildAction;
 import org.jenkinsci.plugins.buildenvironment.actions.utils.Constants;
-import org.jenkinsci.plugins.buildenvironment.actions.utils.StringPair;
 import org.jenkinsci.plugins.buildenvironment.data.Data;
 import org.jenkinsci.plugins.buildenvironment.data.DataDifferenceObject;
 import org.jenkinsci.plugins.buildenvtest.SampleBuildCause;
 import org.junit.Test;
 import org.jvnet.hudson.test.HudsonTestCase;
+import org.xml.sax.SAXException;
+
+import com.gargoylesoftware.htmlunit.Page;
+import com.gargoylesoftware.htmlunit.html.HtmlForm;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
 public class BuildEnvironmentTest extends HudsonTestCase {
 
+    final String jobName = "test_job1";
     FreeStyleProject testJob;
 
     BuildEnvironmentBuildAction buildEnvAction1;
     BuildEnvironmentBuildAction buildEnvAction2;
 
-    private static final Logger LOGGER = Logger
-            .getLogger(BuildEnvironmentTest.class.getName());
-
     @Test
-    public void test1() throws IOException, InterruptedException {
+    public void testBuildActionNatural() throws IOException,
+            InterruptedException {
         setUpTestEnvironmentAndVariables();
         checkBuildEnvironmentActions();
         checkDataHolders();
         checkDifference();
         checkExport();
         trueFalseToYesNoTest();
+    }
+
+    @Test
+    public void testBuildActionStatic() throws IOException {
+        setUpTestEnvironmentAndVariables();
+        assertEquals(buildEnvAction1.getDisplayName(), Constants.NAME);
+        assertEquals(buildEnvAction1.getIconFileName(),
+                Constants.MENUICONFILENAME);
+        assertEquals(buildEnvAction1.getSummaryIconFilename(),
+                Constants.SUMMARYICONFILENAME);
+        assertEquals(buildEnvAction1.getUrlName(), Constants.URL);
+        assertEquals(buildEnvAction1.getSearchUrl(),
+                buildEnvAction1.getUrlName());
+    }
+
+    @Test
+    public void testDifferenceForm() throws IOException, SAXException {
+        setUpTestEnvironmentAndVariables();
+        final HtmlPage page = new WebClient().goTo("job/" + this.jobName
+                + "/1/compare_environment/");
+        HtmlForm diffForm = page.getFormByName("diffForm");
+        assertNotNull(diffForm);
+        diffForm.submit();
     }
 
     /**
@@ -114,7 +136,7 @@ public class BuildEnvironmentTest extends HudsonTestCase {
 
     private void createTestJobAndBuildIt() throws IOException {
         testJob = Jenkins.getInstance().createProject(FreeStyleProject.class,
-                "test_job1");
+                this.jobName);
         testJob.scheduleBuild(new SampleBuildCause());
         try {
             TimeUnit.SECONDS.sleep(10);

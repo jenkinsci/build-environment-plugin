@@ -1,7 +1,5 @@
 package org.jenkinsci.plugins.buildenvtest;
 
-import java.util.logging.Logger;
-
 import org.jenkinsci.plugins.buildenvironment.actions.utils.StringPair;
 import org.junit.Test;
 import org.jvnet.hudson.test.HudsonTestCase;
@@ -12,13 +10,6 @@ import org.jvnet.hudson.test.HudsonTestCase;
  *
  */
 public class StringPairTest extends HudsonTestCase {
-    
-    /**
-     * Logger.
-     */
-    private static final Logger LOGGER = Logger
-            .getLogger(StringPairTest.class.getName());
-    
     
     @Test
     public void testpairDifferent() {
@@ -33,8 +24,15 @@ public class StringPairTest extends HudsonTestCase {
     
     @Test
     public void testPairSame() {
-        LOGGER.info("SAME TEST starting.....");
         StringPair sp = new StringPair("aaa", "aaa");
         assertFalse(sp.areDifferent());
     }
+    
+    @Test
+    public void testNullPair() {
+        StringPair nullPair = new StringPair(null, null);
+        assertFalse(nullPair.areDifferent());
+    }
+    
+    
 }
