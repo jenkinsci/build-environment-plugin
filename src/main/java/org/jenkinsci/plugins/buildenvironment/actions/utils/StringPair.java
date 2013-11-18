@@ -55,8 +55,11 @@ public class StringPair {
      * @return true if the two Strins are different, false otherwise.
      */
     public boolean areDifferent() {
-        if (first == null && second == null) {
+        if (this.first == null && this.second == null) {
             return false;
+        }
+        if(this.first == null || this.second == null) {
+            return true;
         }
         return !(this.first.trim().equals(this.second.trim()));
     }
