@@ -6,11 +6,12 @@ import org.jvnet.hudson.test.HudsonTestCase;
 
 /**
  * Tests the class StringPair.
+ * 
  * @author yboev
- *
+ * 
  */
 public class StringPairTest extends HudsonTestCase {
-    
+
     @Test
     public void testpairDifferent() {
         final String first = "first";
@@ -21,18 +22,16 @@ public class StringPairTest extends HudsonTestCase {
         assertEquals(second, sp.getSecond());
         assertTrue(sp.areDifferent());
     }
-    
+
     @Test
     public void testPairSame() {
         StringPair sp = new StringPair("aaa", "aaa");
         assertFalse(sp.areDifferent());
     }
-    
+
     @Test
     public void testNullPair() {
         StringPair nullPair = new StringPair(null, null);
         assertFalse(nullPair.areDifferent());
     }
-    
-    
 }
