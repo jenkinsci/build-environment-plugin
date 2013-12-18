@@ -1,5 +1,7 @@
 package org.jenkinsci.plugins.buildenvtest;
 
+import static org.junit.Assert.*;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -14,16 +16,19 @@ import org.jenkinsci.plugins.buildenvironment.actions.utils.Constants;
 import org.jenkinsci.plugins.buildenvironment.data.Data;
 import org.jenkinsci.plugins.buildenvironment.data.DataDifferenceObject;
 import org.jenkinsci.plugins.buildenvtest.SampleBuildCause;
+import org.junit.Rule;
 import org.junit.Test;
-import org.jvnet.hudson.test.HudsonTestCase;
+import org.jvnet.hudson.test.JenkinsRule;
 import org.xml.sax.SAXException;
 
-import com.gargoylesoftware.htmlunit.Page;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 
-public class BuildEnvironmentTest extends HudsonTestCase {
-
+public class BuildEnvironmentTest {
+    
+    @Rule
+    public JenkinsRule jenkinsRule = new JenkinsRule();
+    
     final String jobName = "test_job1";
     FreeStyleProject testJob;
 
@@ -57,7 +62,7 @@ public class BuildEnvironmentTest extends HudsonTestCase {
     @Test
     public void testDifferenceForm() throws IOException, SAXException {
         setUpTestEnvironmentAndVariables();
-        final HtmlPage page = new WebClient().goTo("job/" + this.jobName
+        final HtmlPage page = jenkinsRule.createWebClient().goTo("job/" + this.jobName
                 + "/1/compare_environment/");
         HtmlForm diffForm = page.getFormByName("diffForm");
         assertNotNull(diffForm);

@@ -1,8 +1,9 @@
 package org.jenkinsci.plugins.buildenvtest;
 
+import static org.junit.Assert.*;
+
 import org.jenkinsci.plugins.buildenvironment.actions.utils.StringPair;
 import org.junit.Test;
-import org.jvnet.hudson.test.HudsonTestCase;
 
 /**
  * Tests the class StringPair.
@@ -10,8 +11,9 @@ import org.jvnet.hudson.test.HudsonTestCase;
  * @author yboev
  * 
  */
-public class StringPairTest extends HudsonTestCase {
-
+public class StringPairTest {
+    
+    
     @Test
     public void testpairDifferent() {
         final String first = "first";
