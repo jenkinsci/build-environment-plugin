@@ -10,7 +10,7 @@
 	<name> Build Environment Plugin</name>
 	<groupId>org.jenkins-ci.plugins</groupId>
 	<artifactId>build-environment</artifactId>
-	<version>1.5-SNAPSHOT</version>
+	<version>1.5</version>
 	<packaging>hpi</packaging>
 	<url>http://wiki.jenkins-ci.org/display/JENKINS/Build+Environment+Plugin</url>
 	
@@ -49,7 +49,8 @@
 			scm:git:ssh://git@github.com/jenkinsci/build-environment-plugin.git
 		</developerConnection>
 		<url> https://github.com/jenkinsci/build-environment-plugin</url>
-	</scm>
+	  <tag>build-environment-1.5</tag>
+  </scm>
 	
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
