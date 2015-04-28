@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.TreeMap;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import javax.servlet.ServletException;
@@ -21,12 +22,15 @@ import org.jenkinsci.plugins.buildenvironment.data.SlaveData;
 import org.kohsuke.stapler.StaplerRequest;
 import org.kohsuke.stapler.StaplerResponse;
 
+import hudson.EnvVars;
 import hudson.model.AbstractBuild;
 import hudson.model.AbstractProject;
 import hudson.model.Action;
+import hudson.model.TaskListener;
 import hudson.model.Actionable;
 import hudson.model.Job;
 import hudson.model.Run;
+import hudson.util.LogTaskListener;
 import hudson.util.RunList;
 
 /**
@@ -208,8 +212,16 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
         if (envVars != null) {
             envVarsMap = envVars.getData();
         } else {
-            envVarsMap = new TreeMap<String, String>(this.getBuild()
-                    .getEnvVars());
+            try {
+                envVarsMap = new TreeMap<String, String>(this.getBuild()
+                        .getEnvironment((TaskListener) new LogTaskListener(LOGGER, Level.INFO)));
+            } catch (IOException e) {
+                envVarsMap = new EnvVars();
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                envVarsMap = new EnvVars();
+            }
+                
         }
         final ArrayList<String> exportVars = new ArrayList<String>();
         for (Entry<String, String> element : envVarsMap.entrySet()) {
