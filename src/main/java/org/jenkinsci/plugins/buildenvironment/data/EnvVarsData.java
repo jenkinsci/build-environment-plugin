@@ -1,8 +1,13 @@
 package org.jenkinsci.plugins.buildenvironment.data;
 
+import java.io.IOException;
 import java.util.TreeMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import hudson.model.AbstractBuild;
+import hudson.model.TaskListener;
+import hudson.util.LogTaskListener;
 
 /**
  * Represents information about the environment variables used during the build.
@@ -11,6 +16,12 @@ import hudson.model.AbstractBuild;
  * 
  */
 public class EnvVarsData extends Data {
+    
+    /**
+     * Logger.
+     */
+    private static final Logger LOGGER = Logger
+            .getLogger(EnvVarsData.class.getName());
 
     /**
      * Constructor method.
@@ -33,10 +44,18 @@ public class EnvVarsData extends Data {
      * @param build
      *            Current build.
      */
-    @SuppressWarnings("deprecation")
     private void initializeDataMap(AbstractBuild<?, ?> build) {
         TreeMap<String, String> data = this.initEmptyMap();
         // get data, add it to map and return the newly created map.
-        data.putAll(build.getEnvVars());
+     
+        try {
+            data.putAll(build.getEnvironment((TaskListener) new LogTaskListener(LOGGER, Level.INFO)));
+        } catch (IOException e) {
+
+        } catch (InterruptedException e) {
+
+        }
+        
+       
     }
 }
