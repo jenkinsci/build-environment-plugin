@@ -81,6 +81,7 @@ public abstract class Data {
 
     /**
      * Sets an empty new map object and returns it.
+     * @return data as TreeMap.
      */
     public TreeMap<String, String> initEmptyMap() {
         this.data = new TreeMap<String, String>();

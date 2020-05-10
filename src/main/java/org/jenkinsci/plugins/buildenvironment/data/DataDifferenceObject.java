@@ -61,7 +61,7 @@ public class DataDifferenceObject {
     /**
      * Returns the number of entries that are different.
      * 
-     * @return this number as int, should be >= 0.
+     * @return this number as int, should be higher or equal 0.
      */
     public int getDifferentCount() {
         return this.getDifferenceOnly().size();

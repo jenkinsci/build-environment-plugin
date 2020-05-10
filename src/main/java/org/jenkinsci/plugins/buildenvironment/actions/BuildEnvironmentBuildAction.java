@@ -157,7 +157,7 @@ public class BuildEnvironmentBuildAction extends Actionable implements Action {
     }
 
     /**
-     * Converts true/false -> yes/no.
+     * Converts true/false to yes/no.
      * 
      * @param value
      *            boolean to be converted.
