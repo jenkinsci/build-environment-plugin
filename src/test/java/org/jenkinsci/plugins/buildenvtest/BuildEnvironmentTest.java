@@ -15,14 +15,12 @@ import org.jenkinsci.plugins.buildenvironment.actions.BuildEnvironmentBuildActio
 import org.jenkinsci.plugins.buildenvironment.actions.utils.Constants;
 import org.jenkinsci.plugins.buildenvironment.data.Data;
 import org.jenkinsci.plugins.buildenvironment.data.DataDifferenceObject;
-import org.jenkinsci.plugins.buildenvtest.SampleBuildCause;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-import org.xml.sax.SAXException;
 
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlForm;
+import org.htmlunit.html.HtmlPage;
 
 public class BuildEnvironmentTest {
     
@@ -60,13 +58,15 @@ public class BuildEnvironmentTest {
     }
 
     @Test
-    public void testDifferenceForm() throws IOException, SAXException {
+    public void testDifferenceForm() throws Exception {
         setUpTestEnvironmentAndVariables();
-        final HtmlPage page = jenkinsRule.createWebClient().goTo("job/" + this.jobName
+        JenkinsRule.WebClient webClient = jenkinsRule.createWebClient();
+        final HtmlPage page = webClient.goTo("job/" + this.jobName
                 + "/1/compare_environment/");
         HtmlForm diffForm = page.getFormByName("diffForm");
         assertNotNull(diffForm);
-        diffForm.submit();
+
+        jenkinsRule.submit(diffForm);
     }
 
     /**
@@ -76,7 +76,6 @@ public class BuildEnvironmentTest {
      * @throws IOException
      */
     private void setUpTestEnvironmentAndVariables() throws IOException {
-        assertNotNull(Jenkins.getInstance().getPlugin("build-environment"));
         createTestJobAndBuildIt();
         retrieveBuildEnvironmentActionFromBuilds();
     }
@@ -112,7 +111,7 @@ public class BuildEnvironmentTest {
         assertEquals(3, buildEnvAction1.getDataHoldersList().size());
         assertNotNull(buildEnvAction1.getBuildsWithAction());
         assertNotNull(buildEnvAction1.getBuilds());
-        assertEquals(buildEnvAction1.getBuildsWithAction().size(), 2);
+        assertEquals(2, buildEnvAction1.getBuildsWithAction().size());
 
         assertTrue(buildEnvAction1.getBuilds().size() >= buildEnvAction1
                 .getBuildsWithAction().size());
