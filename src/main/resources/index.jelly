@@ -2,7 +2,7 @@
   This view is used to render the installed plugins page.
 -->
 <div>
-  This plugin shows information about the environment in which a project has been build and offers the option to comptare there environments.
+  This plugin shows information about the environment in which a project has been built and offers the option to compare their environments.
 </div>
 
 
